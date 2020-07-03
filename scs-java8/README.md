@@ -139,3 +139,89 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)
     ```
 
 </details>
+
+<details><summary>Validate site map text file name command line argument</summary>
+
+```java
+package net.shawfire.scs;
+
+public class App {
+    private String fileName = null;
+    public static String MustPassFileName = "Must pass site map text file argument";
+    public static String FileNameLabel = "Entered site file text file name is: ";
+
+    private static SysOutDelegate sysOutDelegate = (val) -> System.out.println(val);
+
+    public static void main(String[] args) {
+        /* Validate the number of parameters */
+        if (args.length != 1) {
+            usage();
+            return;
+        }
+
+        App app = new App(args[0]);
+
+        sysOutDelegate.println(app.getString());
+    }
+
+    public App(String fileName) {
+        this.fileName = fileName;
+    }
+
+    private static void usage() {
+        sysOutDelegate.println(MustPassFileName);
+    }
+
+    public String getString() {
+        return FileNameLabel + fileName;
+    }
+
+    protected static void setSysOutDelegate(SysOutDelegate val) {
+        sysOutDelegate = val;
+    }
+}
+```
+
+```java
+package net.shawfire.scs;
+
+@FunctionalInterface
+public interface SysOutDelegate {
+    void println(String val);
+}
+```
+
+```java
+package net.shawfire.scs;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+public class AppTest {
+
+    String lastSysOutmessage;
+
+    @Before
+    public void injectLastSysOutDelegate() {
+        App.setSysOutDelegate((val) -> lastSysOutmessage = val);
+    }
+
+    @Test
+    public void givenTwoInputParameter_shouldAskForOne() throws Exception {
+        App.main(new String[] {"a", "b"});
+
+        Assert.assertEquals(lastSysOutmessage, App.MustPassFileName);
+    }
+
+    @Test
+    public void givenOneInputParameters_shouldReadBack() throws Exception {
+        App.main(new String[] {"a"});
+
+        Assert.assertEquals(lastSysOutmessage, App.FileNameLabel + "a");
+    }
+
+}
+```
+
+</details>
