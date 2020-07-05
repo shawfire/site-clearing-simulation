@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class SiteMap {
-    public ArrayList<String> readFromInputStream(InputStream inputStream)
+    public String[] readFromInputStream(InputStream inputStream)
             throws IOException {
         ArrayList<String> siteMap = new ArrayList<>();
         try (BufferedReader br
@@ -26,6 +26,6 @@ public class SiteMap {
                 }
             }
         }
-        return siteMap;
+        return siteMap.stream().toArray(String[]::new);
     }
 }

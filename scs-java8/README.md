@@ -5,7 +5,7 @@
 
 <details><summary>TODO</summary>
 
-- Validate site clearing simulation test file input
+- Validate that the site map is displayed correctly after reading
 
 </details>
 
@@ -67,7 +67,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)
 
 </details>
 
-<details><summary>First Test to read a site map text file</summary>
+<details><summary>First Test to read a site map text file and check first line</summary>
 
 - Create a folder `resources` in the `test` folder
   - Right Click on the `resources` folder -> Mark Directory as `Test Resources Root`
@@ -221,6 +221,77 @@ public class AppTest {
         Assert.assertEquals(lastSysOutmessage, App.FileNameLabel + "a");
     }
 
+}
+```
+
+</details>
+
+<details><summary>Check all lines of the site map text file are read correctly</summary>
+
+```java
+package net.shawfire.scs;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+public class SiteMapTest {
+
+    @Test
+    public void givenFileNameAsAbsolutePath_whenUsingClasspath_thenFileData() throws IOException {
+        Class classPath = SiteMapTest.class;
+        InputStream inputStream = classPath.getResourceAsStream("/test-site-map.txt");
+        String[] siteMap = new SiteMap().readFromInputStream(inputStream);
+
+        // Check the all lines in the test file are as expected
+        String[] expectedSiteMap = {
+                "ootooooooo",
+                "oooooooToo",
+                "rrrooooToo",
+                "rrrroooooo",
+                "rrrrrtoooo"
+        };
+        for (int i = 0; i < expectedSiteMap.length; i++) {
+            Assert.assertEquals(String.format("line %1$s: ", i), siteMap[i], expectedSiteMap[i]);
+        }
+    }
+
+}
+```
+
+```java
+package net.shawfire.scs;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+public class SiteMap {
+    public String[] readFromInputStream(InputStream inputStream)
+            throws IOException {
+        ArrayList<String> siteMap = new ArrayList<>();
+        try (BufferedReader br
+                     = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = br.readLine()) != null && (line = line.trim()).length() != 0) {
+                siteMap.add(line);
+            }
+        }
+        finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return siteMap.stream().toArray(String[]::new);
+    }
 }
 ```
 
