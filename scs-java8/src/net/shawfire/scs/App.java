@@ -2,8 +2,9 @@ package net.shawfire.scs;
 
 public class App {
     private String fileName = null;
-    public static String MustPassFileName = "Must pass site map text file argument";
-    public static String FileNameLabel = "Entered site file text file name is: ";
+    public static String MustPassFileName = "Must pass only site map text file argument";
+    public static String AppHeadingLabel = "\nWelcome to the site clearing simulator.\n";
+    public static String SiteMapLabel = "\nThis is a map of the site (read from file: %1$s):\n";
 
     private static SysOutDelegate sysOutDelegate = (val) -> System.out.println(val);
 
@@ -11,12 +12,14 @@ public class App {
         /* Validate the number of parameters */
         if (args.length != 1) {
             usage();
-            return;
+            throw new java.lang.IllegalArgumentException(
+                    String.format("Expected 1 argument but received: %1d", args.length));
         }
 
         App app = new App(args[0]);
 
-        sysOutDelegate.println(app.getString());
+        sysOutDelegate.println(app.AppHeadingLabel);
+        sysOutDelegate.println(app.getSiteMapHeading());
     }
 
     public App(String fileName) {
@@ -27,8 +30,8 @@ public class App {
         sysOutDelegate.println(MustPassFileName);
     }
 
-    public String getString() {
-        return FileNameLabel + fileName;
+    public String getSiteMapHeading() {
+        return String.format(SiteMapLabel, fileName);
     }
 
     protected static void setSysOutDelegate(SysOutDelegate val) {
