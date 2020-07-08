@@ -1,23 +1,25 @@
 package net.shawfire.scs;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.fail;
+import org.mockito.Mockito;
+
+import java.io.PrintStream;
+
 
 public class AppTest {
 
-    StringBuffer outputMessage = new StringBuffer();
+    PrintStream stdout = Mockito.mock(PrintStream.class);
 
-    private void assertOutputContainsString(String str) {
-        MatcherAssert.assertThat(outputMessage.toString(), CoreMatchers.containsString(str));
+    private void assertStdoutContains(String str) {
+        Mockito.verify(stdout).println(Mockito.contains(str));
     }
 
     @Before
     public void injectLastSysOutDelegate() {
-        App.setSysOutDelegate((val) -> outputMessage.append(val).toString());
+        System.setOut(stdout);
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
@@ -32,8 +34,16 @@ public class AppTest {
             App.main(new String[] { "a", "b" });
 
         } catch (java.lang.IllegalArgumentException e) {
-            assertOutputContainsString(App.MustPassFileName);
+            assertStdoutContains(App.MustPassFileName);
+            Assert.assertEquals(String.format(App.ExpectedOneArgGotNMsg, 2), e.getMessage());
         }
+    }
+
+    @Test
+    public void givenAValidMapFile_shouldDisplayMapLabel() throws Exception {
+        String fileName = "test-site-map.txt";
+        App.main(new String[] { fileName });
+        assertStdoutContains(App.AppHeadingLabel);
     }
 
     @Test
@@ -41,14 +51,8 @@ public class AppTest {
         String fileName = "testFileName.txt";
         App.main(new String[] { fileName });
 
-        assertOutputContainsString(String.format(App.SiteMapLabel, fileName));
+        assertStdoutContains(String.format(App.SiteMapLabel, fileName));
     }
 
-    @Test
-    public void givenAValidMapFile_shouldDisplayMapLabel() throws Exception {
-        String fileName = "test-site-map.txt";
-        App.main(new String[] { fileName });
-        assertOutputContainsString(App.AppHeadingLabel);
-    }
 
 }

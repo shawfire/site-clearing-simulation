@@ -5,8 +5,6 @@
 
 <details><summary>TODO</summary>
 
-- Use Mockito to validate output.
-  - [Testing System.out.println Outputs](https://www.adam-bien.com/roller/abien/entry/testing_system_out_println_outputs)
 - Validate that the site map is displayed correctly after reading
 
 </details>
@@ -403,4 +401,119 @@ public class App {
 
 References: [Using Hamcrest for testing - Tutorial](https://www.vogella.com/tutorials/Hamcrest/article.html)
 
+</details>
+
+<details><summary>Use Mockito to validate output</summary>
+
+```java
+package net.shawfire.scs;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.fail;
+import org.mockito.Mockito;
+
+import java.io.PrintStream;
+
+
+public class AppTest {
+
+    PrintStream stdout = Mockito.mock(PrintStream.class);
+
+    private void assertStdoutContains(String str) {
+        Mockito.verify(stdout).println(Mockito.contains(str));
+    }
+
+    @Before
+    public void injectLastSysOutDelegate() {
+        System.setOut(stdout);
+    }
+
+    @Test(expected = java.lang.IllegalArgumentException.class)
+    public void givenTwoInputParameter_shouldThrowException() throws Exception {
+        App.main(new String[] { "a", "b" });
+    }
+
+    @Test
+    public void givenTwoInputParameter_shouldAskForOne() {
+
+        try {
+            App.main(new String[] { "a", "b" });
+
+        } catch (java.lang.IllegalArgumentException e) {
+            assertStdoutContains(App.MustPassFileName);
+            Assert.assertEquals(String.format(App.ExpectedOneArgGotNMsg, 2), e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenAValidMapFile_shouldDisplayMapLabel() throws Exception {
+        String fileName = "test-site-map.txt";
+        App.main(new String[] { fileName });
+        assertStdoutContains(App.AppHeadingLabel);
+    }
+
+    @Test
+    public void givenOneInputParameters_shouldReadBack() throws Exception {
+        String fileName = "testFileName.txt";
+        App.main(new String[] { fileName });
+
+        assertStdoutContains(String.format(App.SiteMapLabel, fileName));
+    }
+
+}
+```
+
+```java
+package net.shawfire.scs;
+
+public class App {
+    private String fileName = null;
+    public static String MustPassFileName = "Must pass only site map text file argument";
+    public static String AppHeadingLabel = "\nWelcome to the site clearing simulator.\n";
+    public static String SiteMapLabel = "\nThis is a map of the site (read from file: %1$s):\n";
+    public static String ExpectedOneArgGotNMsg = "Expected 1 argument but received: %1d";
+
+    private static SysOutDelegate sysOutDelegate = (val) -> System.out.println(val);
+
+    public static void main(String[] args) {
+        /* Validate the number of parameters */
+        if (args.length != 1) {
+            usage();
+            throw new java.lang.IllegalArgumentException(
+                    String.format(ExpectedOneArgGotNMsg, args.length));
+        }
+
+        App app = new App(args[0]);
+
+        sysOutDelegate.println(app.AppHeadingLabel);
+        sysOutDelegate.println(app.getSiteMapHeading());
+    }
+
+    public App(String fileName) {
+        this.fileName = fileName;
+    }
+
+    private static void usage() {
+        sysOutDelegate.println(MustPassFileName);
+    }
+
+    public String getSiteMapHeading() {
+        return String.format(SiteMapLabel, fileName);
+    }
+
+    protected static void setSysOutDelegate(SysOutDelegate val) {
+        sysOutDelegate = val;
+    }
+}
+```
+
+</details>
+
+<details><summary>References</summary>
+
+- [junit4 docs](https://junit.org/junit4/)
+- [Mockito docs](https://site.mockito.org)
+- [Mockito user guide](https://docs.google.com/document/d/15mJ2Qrldx-J14ubTEnBj7nYN2FB8ap7xOn8GRAi24_A/edit)
 </details>

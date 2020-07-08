@@ -5,6 +5,7 @@ public class App {
     public static String MustPassFileName = "Must pass only site map text file argument";
     public static String AppHeadingLabel = "\nWelcome to the site clearing simulator.\n";
     public static String SiteMapLabel = "\nThis is a map of the site (read from file: %1$s):\n";
+    public static String ExpectedOneArgGotNMsg = "Expected 1 argument but received: %1d";
 
     private static SysOutDelegate sysOutDelegate = (val) -> System.out.println(val);
 
@@ -13,7 +14,7 @@ public class App {
         if (args.length != 1) {
             usage();
             throw new java.lang.IllegalArgumentException(
-                    String.format("Expected 1 argument but received: %1d", args.length));
+                    String.format(ExpectedOneArgGotNMsg, args.length));
         }
 
         App app = new App(args[0]);
