@@ -3,27 +3,38 @@ package net.shawfire.scs;
 public class App {
     private String fileName = null;
     public static String MustPassFileName = "Must pass only site map text file argument";
-    public static String AppHeadingLabel = "\nWelcome to the site clearing simulator.\n";
+    public static String AppHeadingLabel = "\nWelcome to the site clearing simulator.";
     public static String SiteMapLabel = "\nThis is a map of the site (read from file: %1$s):\n";
     public static String ExpectedOneArgGotNMsg = "Expected 1 argument but received: %1d";
 
     private static SysOutDelegate sysOutDelegate = (val) -> System.out.println(val);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         /* Validate the number of parameters */
         if (args.length != 1) {
             usage();
             throw new java.lang.IllegalArgumentException(
                     String.format(ExpectedOneArgGotNMsg, args.length));
         }
-
         App app = new App(args[0]);
 
         sysOutDelegate.println(app.AppHeadingLabel);
         sysOutDelegate.println(app.getSiteMapHeading());
+
+        SiteMap siteMap = new SiteMap();
+        siteMap.readFromInputStream(app.getFileName());
+        sysOutDelegate.println(siteMap.toString());
     }
 
     public App(String fileName) {
+        setFileName(fileName);
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 

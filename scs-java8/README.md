@@ -5,7 +5,13 @@
 
 <details><summary>TODO</summary>
 
-- Validate that the site map is displayed correctly after reading
+- Add javadoc comments
+- Check for invalid file
+- Add logging
+- Accept bulldozer directives
+- Display cost summary.
+- Add maven pom.xml file.
+- Create Dockerfile for the solution.
 
 </details>
 
@@ -516,4 +522,7 @@ public class App {
 - [junit4 docs](https://junit.org/junit4/)
 - [Mockito docs](https://site.mockito.org)
 - [Mockito user guide](https://docs.google.com/document/d/15mJ2Qrldx-J14ubTEnBj7nYN2FB8ap7xOn8GRAi24_A/edit)
+- [javadoc comments](https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html)
+- [Apache commons lang](https://commons.apache.org/proper/commons-lang/)
+- [java commons lang3 doco](https://commons.apache.org/proper/commons-lang/javadocs/api-release/index.html)
 </details>
