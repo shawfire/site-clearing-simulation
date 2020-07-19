@@ -17,7 +17,7 @@ public class BulldozerTest {
         siteMap.readFromInputStream("/test-site-map.txt");
     }
 
-    public void checkDirectionPosAndSquareValue(Direction direction, int x, int y, String squareValue) {
+    public void checkDirectionPosAndSquareValue(Direction direction, int x, int y, SquareType squareValue) {
         Assert.assertEquals("Value of direction unexpected: ", direction, bulldozer.getDirection());
         Assert.assertEquals("Value of x unexpected: ", x, bulldozer.getX());
         Assert.assertEquals("Value of y unexpected: ", y, bulldozer.getY());
@@ -33,21 +33,21 @@ public class BulldozerTest {
 
         // check a valid move by one square
         bulldozer.move(1);
-        checkDirectionPosAndSquareValue(Direction.EAST, 0, 0, "o");
+        checkDirectionPosAndSquareValue(Direction.EAST, 0, 0, SquareType.PLAIN);
         Assert.assertEquals(new Integer(1), bulldozer.getCosts().quantities.get(ItemType.FUEL_USAGE));
 
         // check a valid move by multiple squares
         bulldozer.move(2);
-        checkDirectionPosAndSquareValue(Direction.EAST, 2, 0, "t");
+        checkDirectionPosAndSquareValue(Direction.EAST, 2, 0, SquareType.TREE_REMOVAL);
         Assert.assertEquals(new Integer(4), bulldozer.getCosts().quantities.get(ItemType.FUEL_USAGE));
 
         // test change in direction to SOUTH
         bulldozer.changeDirection(ChangeInDirection.RIGHT);
-        checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 0, "t");
+        checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 0, SquareType.TREE_REMOVAL);
 
         // move south
         bulldozer.move(2);
-        checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 2, "r");
+        checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 2, SquareType.ROCKY);
         Assert.assertEquals(new Integer(7), bulldozer.getCosts().quantities.get(ItemType.FUEL_USAGE));
     }
 
@@ -58,10 +58,10 @@ public class BulldozerTest {
         checkDirectionPosAndSquareValue(Direction.EAST, -1, 0, null);
         bulldozer.move(8);
         bulldozer.changeDirection(ChangeInDirection.RIGHT);
-        checkDirectionPosAndSquareValue(Direction.SOUTH, 7, 0, "o");
+        checkDirectionPosAndSquareValue(Direction.SOUTH, 7, 0, SquareType.PLAIN);
         Assert.assertEquals(new Integer(9), bulldozer.getCosts().quantities.get(ItemType.FUEL_USAGE));
         bulldozer.move(1);
-        checkDirectionPosAndSquareValue(Direction.SOUTH, 7, 1, "T");
+        checkDirectionPosAndSquareValue(Direction.SOUTH, 7, 1, SquareType.PRESERVE_TREE);
     }
 
     @Test(expected = java.lang.IndexOutOfBoundsException.class)
@@ -76,8 +76,11 @@ public class BulldozerTest {
     public void testMoveBeyondSiteMapBearingSouth() {
         // Move beyond the east border
         bulldozer = new Bulldozer(siteMap);
+        checkDirectionPosAndSquareValue(Direction.EAST, -1, 0, null);
+        bulldozer.move(1);
+        checkDirectionPosAndSquareValue(Direction.EAST, 0, 0, SquareType.PLAIN);
         bulldozer.changeDirection(ChangeInDirection.RIGHT);
-        checkDirectionPosAndSquareValue(Direction.SOUTH, -1, 0, null);
+        checkDirectionPosAndSquareValue(Direction.SOUTH, 0, 0, SquareType.PLAIN);
         bulldozer.move(5);
     }
 

@@ -13,19 +13,15 @@ public class SiteMap {
     private String[] siteMap;
     private String[][] siteMap2;
     private SquareType[][] siteMap3;
+    private int maxX;
+    private int maxY;
 
     public int getMaxX() {
-        if (getMaxY() <= 0) {
-            return 0;
-        }
-        return siteMap[0].length();
+        return maxX;
     }
 
     public int getMaxY() {
-        if (siteMap == null) {
-            return 0;
-        }
-        return siteMap.length;
+        return maxY;
     }
 
     public String getCurrentSquareValueOld(int x, int y) {
@@ -35,11 +31,18 @@ public class SiteMap {
         return siteMap[y].substring(x, x+1);
     }
 
-    public String getCurrentSquareValue(int x, int y) {
+    public String getCurrentSquareValueOld2(int x, int y) {
         if (x < 0 || x < 0) {
             return null;
         }
         return siteMap2[x][y];
+    }
+
+    public SquareType getCurrentSquareValue(int x, int y) {
+        if (x < 0 || x < 0) {
+            return null;
+        }
+        return siteMap3[x][y];
     }
 
     /**
@@ -85,10 +88,10 @@ public class SiteMap {
                 }
             }
         }
-        int maxX = siteMapList.get(0).length();
-        int maxY = siteMapList.size();
-        siteMap2 = new String[maxY][maxX];
-        siteMap3 = new SquareType[maxY][maxX];
+        maxX = siteMapList.get(0).length();
+        maxY = siteMapList.size();
+        siteMap2 = new String[maxX][maxY];
+        siteMap3 = new SquareType[maxX][maxY];
         for (int y=0; y < maxY; y++) {
             String row = siteMapList.get(y);
             for (int x=0; x < maxX; x++) {
