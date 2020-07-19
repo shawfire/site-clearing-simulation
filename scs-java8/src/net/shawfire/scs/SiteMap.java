@@ -11,6 +11,8 @@ import java.util.ArrayList;
 public class SiteMap {
 
     private String[] siteMap;
+    private String[][] siteMap2;
+    private SquareType[][] siteMap3;
 
     public int getMaxX() {
         if (getMaxY() <= 0) {
@@ -26,11 +28,18 @@ public class SiteMap {
         return siteMap.length;
     }
 
-    public String getCurrentSquareValue(int x, int y) {
+    public String getCurrentSquareValueOld(int x, int y) {
         if (x < 0 || x < 0) {
             return null;
         }
         return siteMap[y].substring(x, x+1);
+    }
+
+    public String getCurrentSquareValue(int x, int y) {
+        if (x < 0 || x < 0) {
+            return null;
+        }
+        return siteMap2[x][y];
     }
 
     /**
@@ -74,6 +83,17 @@ public class SiteMap {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+        int maxX = siteMapList.get(0).length();
+        int maxY = siteMapList.size();
+        siteMap2 = new String[maxY][maxX];
+        siteMap3 = new SquareType[maxY][maxX];
+        for (int y=0; y < maxY; y++) {
+            String row = siteMapList.get(y);
+            for (int x=0; x < maxX; x++) {
+                siteMap2[x][y] = row.substring(x, x+1);
+                siteMap3[x][y] = SquareType.fromString(row.substring(x, x+1));
             }
         }
         setSiteMap(siteMapList.stream().toArray(String[]::new));
