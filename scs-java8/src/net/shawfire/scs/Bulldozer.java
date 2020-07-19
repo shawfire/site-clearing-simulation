@@ -39,6 +39,10 @@ public class Bulldozer {
         return costs;
     }
 
+    public Integer getCost(ItemType itemType) {
+        return getCosts().quantities.get(itemType);
+    }
+
     public SiteMap getSiteMap() {
         return siteMap;
     }
@@ -66,13 +70,17 @@ public class Bulldozer {
             }
             checkOutOfBounds();
 
-            // Add cost and update site map
-            costs.incFuelCost(getCurrentSquareValue());
-
-            if (SquareType.PRESERVE_TREE.equals(getCurrentSquareValue())) {
-                throw new IllegalArgumentException(AttemptAccessProtectedSquareMessage + SquareType.PRESERVE_TREE.name());
+            if (count < n && SquareType.TREE_REMOVAL == getCurrentSquareValue()) {
+                costs.incItemCost(ItemType.PAINT_DAMAGE, getCurrentSquareValue());
             }
 
+            if (SquareType.PRESERVE_TREE == getCurrentSquareValue()) {
+                costs.incItemCost(ItemType.DESTRUCTION_PROTECTED_TREE, getCurrentSquareValue());
+                throw new IllegalArgumentException(AttemptAccessProtectedSquareMessage + SquareType.PRESERVE_TREE);
+            }
+
+            // Add cost and update site map
+            costs.incItemCost(ItemType.FUEL_USAGE, getCurrentSquareValue());
         }
     }
 

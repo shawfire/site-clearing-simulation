@@ -15,8 +15,8 @@ public class Costs {
         quantities.put(itemType, quantities.get(itemType) + amount);
     }
 
-    public void incFuelCost(SquareType squareType) {
-        incCost(ItemType.FUEL_USAGE, Activity.costs.get(squareType));
+    public void incItemCost(ItemType itemType, SquareType squareType) {
+        incCost(itemType, Activity.costs.get(squareType));
     }
 
     public EnumMap<ItemType, Integer> getQuantities() {

@@ -11,6 +11,7 @@ public class Activity {
             costs.put(squareType, 1);
         }
         // Assign activity types that are not one.
+        costs.put(SquareType.PRESERVE_TREE, 10);
         costs.put(SquareType.TREE_REMOVAL, 2);
         costs.put(SquareType.ROCKY, 2);
     }
