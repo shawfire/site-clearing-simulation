@@ -81,6 +81,7 @@ public class Bulldozer {
 
             // Add cost and update site map
             costs.incItemCost(ItemType.FUEL_USAGE, getCurrentSquareValue());
+            getSiteMap().clearSquare(getX(), getY());
         }
     }
 
@@ -91,11 +92,18 @@ public class Bulldozer {
         return siteMap.getCurrentSquareValueOld(getX(), getY());
     }
 
+    public SquareType getSquareValue(int x, int y) {
+        if (x < 0 || y < 0) {
+            return null;
+        }
+        return siteMap.getSquareValue(x, y);
+    }
+
     public SquareType getCurrentSquareValue() {
         if (getX() < 0 || getY() < 0) {
             return null;
         }
-        return siteMap.getCurrentSquareValue(getX(), getY());
+        return siteMap.getSquareValue(getX(), getY());
     }
 
 

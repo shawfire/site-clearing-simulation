@@ -18,6 +18,11 @@ public class BulldozerTest {
         siteMap.readFromInputStream("/test-site-map.txt");
     }
 
+    public void checkDirectionAndSquareValue(Direction direction, int x, int y, SquareType squareValue) {
+        Assert.assertEquals("Value of direction unexpected: ", direction, bulldozer.getDirection());
+        Assert.assertEquals("Value of square unexpected: ", squareValue, bulldozer.getSquareValue(x, y));
+    }
+
     public void checkDirectionPosAndSquareValue(Direction direction, int x, int y, SquareType squareValue) {
         Assert.assertEquals("Value of direction unexpected: ", direction, bulldozer.getDirection());
         Assert.assertEquals("Value of x unexpected: ", x, bulldozer.getX());
@@ -35,23 +40,28 @@ public class BulldozerTest {
         Assert.assertEquals(new Integer(0), bulldozer.getCost(ItemType.FUEL_USAGE));
 
         // check a valid move by one square
+        checkDirectionAndSquareValue(Direction.EAST, 0, 0, SquareType.PLAIN);
         bulldozer.move(1);
-        checkDirectionPosAndSquareValue(Direction.EAST, 0, 0, SquareType.PLAIN);
+        checkDirectionPosAndSquareValue(Direction.EAST, 0, 0, SquareType.CLEARED);
         Assert.assertEquals(new Integer(1), bulldozer.getCost(ItemType.FUEL_USAGE));
 
         // check a valid move by multiple squares
+        checkDirectionAndSquareValue(Direction.EAST, 1, 0, SquareType.PLAIN);
+        checkDirectionAndSquareValue(Direction.EAST, 2, 0, SquareType.TREE_REMOVAL);
         bulldozer.move(2);
-        checkDirectionPosAndSquareValue(Direction.EAST, 2, 0, SquareType.TREE_REMOVAL);
+        checkDirectionAndSquareValue(Direction.EAST, 1, 0, SquareType.CLEARED);
+        checkDirectionPosAndSquareValue(Direction.EAST, 2, 0, SquareType.CLEARED);
         Assert.assertEquals(new Integer(0), bulldozer.getCost(ItemType.PAINT_DAMAGE));
         Assert.assertEquals(new Integer(4), bulldozer.getCost(ItemType.FUEL_USAGE));
 
         // test change in direction to SOUTH
         bulldozer.changeDirection(ChangeInDirection.RIGHT);
-        checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 0, SquareType.TREE_REMOVAL);
+        checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 0, SquareType.CLEARED);
 
         // move south
+        checkDirectionAndSquareValue(Direction.SOUTH, 2, 2, SquareType.ROCKY);
         bulldozer.move(2);
-        checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 2, SquareType.ROCKY);
+        checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 2, SquareType.CLEARED);
         Assert.assertEquals(new Integer(7), bulldozer.getCost(ItemType.FUEL_USAGE));
     }
 
@@ -61,9 +71,10 @@ public class BulldozerTest {
         bulldozer = new Bulldozer(siteMap);
         checkDirectionPosAndSquareValue(Direction.EAST, -1, 0, null);
         Assert.assertEquals(new Integer(0), bulldozer.getCost(ItemType.PAINT_DAMAGE));
+        checkDirectionAndSquareValue(Direction.EAST, 7, 0, SquareType.PLAIN);
         bulldozer.move(8);
         bulldozer.changeDirection(ChangeInDirection.RIGHT);
-        checkDirectionPosAndSquareValue(Direction.SOUTH, 7, 0, SquareType.PLAIN);
+        checkDirectionPosAndSquareValue(Direction.SOUTH, 7, 0, SquareType.CLEARED);
         Assert.assertEquals(new Integer(9), bulldozer.getCost(ItemType.FUEL_USAGE));
         Assert.assertEquals(new Integer(0),
                 bulldozer.getCost(ItemType.DESTRUCTION_PROTECTED_TREE));
@@ -103,9 +114,9 @@ public class BulldozerTest {
         bulldozer = new Bulldozer(siteMap);
         checkDirectionPosAndSquareValue(Direction.EAST, -1, 0, null);
         bulldozer.move(1);
-        checkDirectionPosAndSquareValue(Direction.EAST, 0, 0, SquareType.PLAIN);
+        checkDirectionPosAndSquareValue(Direction.EAST, 0, 0, SquareType.CLEARED);
         bulldozer.changeDirection(ChangeInDirection.RIGHT);
-        checkDirectionPosAndSquareValue(Direction.SOUTH, 0, 0, SquareType.PLAIN);
+        checkDirectionPosAndSquareValue(Direction.SOUTH, 0, 0, SquareType.CLEARED);
         bulldozer.move(5);
     }
 

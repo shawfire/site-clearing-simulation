@@ -24,6 +24,10 @@ public class SiteMap {
         return maxY;
     }
 
+    public void clearSquare(int x, int y) {
+        siteMap3[x][y] = SquareType.CLEARED;
+    }
+
     public String getCurrentSquareValueOld(int x, int y) {
         if (x < 0 || x < 0) {
             return null;
@@ -38,7 +42,7 @@ public class SiteMap {
         return siteMap2[x][y];
     }
 
-    public SquareType getCurrentSquareValue(int x, int y) {
+    public SquareType getSquareValue(int x, int y) {
         if (x < 0 || x < 0) {
             return null;
         }
