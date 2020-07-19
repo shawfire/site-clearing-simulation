@@ -44,25 +44,4 @@ public class SiteMapTest {
                 "r r r r r t o o o o";
         Assert.assertEquals(siteMap.toString(),expectedSiteMapDisplay);
     }
-
-    public void checkDirectionPosAndSquareValue(Direction direction, int x, int y, String squareValue) {
-        Assert.assertEquals("Value of direction unexpected: ", direction, siteMap.getDirection());
-        Assert.assertEquals("Value of x unexpected: ", x, siteMap.getX());
-        Assert.assertEquals("Value of y unexpected: ", y, siteMap.getY());
-        Assert.assertEquals("Value of square unexpected: ", squareValue, siteMap.getCurrentSquareValue());
-
-    }
-
-    @Test
-    public void testValidMoves() {
-        checkDirectionPosAndSquareValue(Direction.EAST, -1, 0, null);
-        siteMap.move(1);
-        checkDirectionPosAndSquareValue(Direction.EAST, 0, 0, "o");
-        siteMap.move(2);
-        checkDirectionPosAndSquareValue(Direction.EAST, 2, 0, "t");
-    }
-
-    @Test
-    public void testMoveToInvalidSqare() {
-    }
 }
