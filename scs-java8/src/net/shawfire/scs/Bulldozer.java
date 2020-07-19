@@ -9,6 +9,7 @@ public class Bulldozer {
     private int x = -1;
     private int y = 0;
     private SiteMap siteMap;
+    private Costs costs = new Costs();
 
     public Direction getDirection() {
         return direction;
@@ -32,6 +33,10 @@ public class Bulldozer {
 
     public int getY() {
         return y;
+    }
+
+    public Costs getCosts() {
+        return costs;
     }
 
     public SiteMap getSiteMap() {
@@ -74,12 +79,16 @@ public class Bulldozer {
                 default:
                     throw new IllegalStateException(UnexpectedDirectionMessage + getDirection());
             }
-        }
-        if (outOfBounds) {
-            throw new IndexOutOfBoundsException(AttemptToDriveOutOfBoundsMessage + getDirection());
-        }
-        if (SquareType.PRESERVE_TREE.equals(getCurrentSquareValue())) {
-            throw new IllegalArgumentException(AttemptAccessProtectedSquareMessage + SquareType.PRESERVE_TREE.name());
+            if (outOfBounds) {
+                throw new IndexOutOfBoundsException(AttemptToDriveOutOfBoundsMessage + getDirection());
+            }
+            // Add cost and update site map
+            costs.incFuelCost(SquareType.fromString(getCurrentSquareValue()));
+
+            if (SquareType.PRESERVE_TREE.equals(getCurrentSquareValue())) {
+                throw new IllegalArgumentException(AttemptAccessProtectedSquareMessage + SquareType.PRESERVE_TREE.name());
+            }
+
         }
     }
 

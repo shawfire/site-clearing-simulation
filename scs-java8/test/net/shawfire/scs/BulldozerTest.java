@@ -34,10 +34,12 @@ public class BulldozerTest {
         // check a valid move by one square
         bulldozer.move(1);
         checkDirectionPosAndSquareValue(Direction.EAST, 0, 0, "o");
+        Assert.assertEquals(new Integer(1), bulldozer.getCosts().quantities.get(ItemType.FUEL_USAGE));
 
         // check a valid move by multiple squares
         bulldozer.move(2);
         checkDirectionPosAndSquareValue(Direction.EAST, 2, 0, "t");
+        Assert.assertEquals(new Integer(4), bulldozer.getCosts().quantities.get(ItemType.FUEL_USAGE));
 
         // test change in direction to SOUTH
         bulldozer.changeDirection(ChangeInDirection.RIGHT);
@@ -46,6 +48,7 @@ public class BulldozerTest {
         // move south
         bulldozer.move(2);
         checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 2, "r");
+        Assert.assertEquals(new Integer(7), bulldozer.getCosts().quantities.get(ItemType.FUEL_USAGE));
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
@@ -56,6 +59,7 @@ public class BulldozerTest {
         bulldozer.move(8);
         bulldozer.changeDirection(ChangeInDirection.RIGHT);
         checkDirectionPosAndSquareValue(Direction.SOUTH, 7, 0, "o");
+        Assert.assertEquals(new Integer(9), bulldozer.getCosts().quantities.get(ItemType.FUEL_USAGE));
         bulldozer.move(1);
         checkDirectionPosAndSquareValue(Direction.SOUTH, 7, 1, "T");
     }
