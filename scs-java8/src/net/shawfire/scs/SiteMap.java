@@ -11,6 +11,83 @@ import java.util.ArrayList;
 public class SiteMap {
 
     private String[] siteMap;
+    private int x = -1;
+    private int y = 0;
+    private Direction direction = Direction.EAST;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void incX(int n) {
+        this.x += n;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void incY(int n) {
+        this.y += n;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public String getCurrentSquareValue() {
+        if (getX() < 0 || getY() < 0) {
+            return null;
+        }
+        return siteMap[getY()].substring(getX(), getX()+1);
+    }
+
+    public void move(int n) {
+        int count = 0;
+        Direction direction = getDirection();
+        while (count++ < n) {
+            switch (direction) {
+                case EAST:
+                    incX(1);
+                    break;
+                case WEST:
+                    incX(-1);
+                    break;
+                case SOUTH:
+                    incY(1);
+                    break;
+                case NORTH:
+                    incY(-1);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected direction: " + direction);
+            }
+        }
+    }
+
+    public void changeDirection(char command) {
+        if (command != 'l' || command != 'r') {
+            throw new IllegalArgumentException("Unexpected change in direction command: " + command);
+        }
+        if (command == 'r') {
+
+        } else if (command == 'l') {
+
+        }
+
+    }
 
     /**
      * Return a siteMap formatted for display as a String
