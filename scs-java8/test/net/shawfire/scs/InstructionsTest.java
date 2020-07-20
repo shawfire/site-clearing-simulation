@@ -1,18 +1,23 @@
 package net.shawfire.scs;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.BufferedReader;
 import java.io.PrintStream;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 public class InstructionsTest {
 
     PrintStream stdout = Mockito.mock(PrintStream.class);
+
+    @Before
+    public void beforeEachTest() {
+        System.setOut(stdout);
+    }
 
     @Test
     public void testGetInstruction() throws Exception {

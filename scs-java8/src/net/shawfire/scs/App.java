@@ -26,10 +26,18 @@ public class App {
     public static String TotalLabel = "Total";
     public static String ThankYouMsg = "\nThankyou for using the Aconex site clearing simulator.\n";
 
-    private static SysOutDelegate sysOutDelegate = (val) -> System.out.println(val);
     //Enter data using BufferReader
     private static BufferedReader reader =
             new BufferedReader(new InputStreamReader(System.in));
+
+    private static void print(String val) {
+        System.out.print(val + "\n");
+    }
+    private static void println(String val) {
+        print(val + "\n");
+    }
+
+    private static SysOutDelegate sysOutDelegate = (val) -> println(val);
 
     public static void main(String[] args) throws Exception {
         /* Validate the number of parameters */
@@ -40,15 +48,19 @@ public class App {
         }
         App app = new App(args[0]);
 
-        sysOutDelegate.println(app.AppHeadingLabel);
-        sysOutDelegate.println(app.getSiteMapHeading());
+        System.out.print(app.AppHeadingLabel + "\n");
+        println(app.getSiteMapHeading());
 
+        // Read siteMap
         SiteMap siteMap = new SiteMap();
         siteMap.readFromInputStream(app.getFileName());
-        sysOutDelegate.println(siteMap.toString());
+        println(siteMap.toString());
 
-        sysOutDelegate.println(app.InitialBulldozerPositionMsg);
+        // Create bulldozer
+        Bulldozer bulldozer = new Bulldozer(siteMap);
+        println(app.InitialBulldozerPositionMsg);
 
+        // Read commands
         ArrayList<String> commandList = new ArrayList<>();
         String input;
         do {
@@ -56,14 +68,14 @@ public class App {
             // Reading data using readLine
             input = reader.readLine();
             commandList.add(input);
-            sysOutDelegate.println(input);
+            println(input);
         } while (!input.equals("q"));
 
-        sysOutDelegate.println(app.CommandsEnteredHeading);
+        println(app.CommandsEnteredHeading);
 
         String[] commandArray = commandList.stream().toArray(String[]::new);
         for (int i = 0; i < commandArray.length; i++) {
-            sysOutDelegate.println(commandArray[i]);
+            println(commandArray[i]);
             String[] commands = commandArray[i].trim().split(" +");
             for (String command : commands) {
                 System.out.println(String.format("match: %1$s", command));
@@ -77,8 +89,7 @@ public class App {
             }
         }
 
-        sysOutDelegate.println(app.ThankYouMsg);
-
+        System.out.print(app.ThankYouMsg + "\n");
     }
 
     public App(String fileName) {
@@ -94,7 +105,7 @@ public class App {
     }
 
     private static void usage() {
-        sysOutDelegate.println(MustPassFileName);
+        println(MustPassFileName);
     }
 
     public String getSiteMapHeading() {

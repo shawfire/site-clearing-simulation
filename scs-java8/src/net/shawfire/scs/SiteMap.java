@@ -2,10 +2,7 @@ package net.shawfire.scs;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class SiteMap {
@@ -110,6 +107,9 @@ public class SiteMap {
     public String[] readFromInputStream(String fileName)
             throws IOException {
         InputStream inputStream = SiteMap.class.getResourceAsStream(fileName);
+        if (inputStream == null) {
+            throw new FileNotFoundException(String.format("File [%1$s] is not found.", fileName));
+        }
         return readFromInputStream(inputStream);
     }
 
