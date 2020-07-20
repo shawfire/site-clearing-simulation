@@ -11,8 +11,18 @@ public class Costs {
         }
     }
 
+    /**
+     * Increment the cost of the item by the value provided
+     */
     public void incCost(ItemType itemType, int amount) {
         quantities.put(itemType, quantities.get(itemType) + amount);
+    }
+
+    /**
+     * Increment the cost of the item by a default value of one
+     */
+    public void incCost(ItemType itemType) {
+        incCost(itemType, 1);
     }
 
     public void incItemCost(ItemType itemType, SquareType squareType) {

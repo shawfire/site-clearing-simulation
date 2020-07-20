@@ -58,6 +58,7 @@ public class Bulldozer {
     }
 
     public void move(int n) {
+        costs.incCost(ItemType.COMMUNICATION_OVERHEAD);
         int count = 0;
         while (count++ < n) {
             switch (getDirection()) {
@@ -108,6 +109,7 @@ public class Bulldozer {
 
 
     public void changeDirection(ChangeInDirection command) {
+        costs.incCost(ItemType.COMMUNICATION_OVERHEAD);
         setDirection(getDirection().changeDirection(command));
     }
 }
