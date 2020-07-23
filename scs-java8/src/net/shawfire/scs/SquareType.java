@@ -5,6 +5,10 @@ public enum SquareType {
 
     private String value;
 
+    public String getValue() {
+        return value;
+    }
+
     public boolean equals(String value) {
         return this.value.equals(value);
     }
