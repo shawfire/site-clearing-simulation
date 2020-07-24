@@ -86,13 +86,6 @@ public class Bulldozer {
         }
     }
 
-//    public String getCurrentSquareValueOld() {
-//        if (getX() < 0 || getY() < 0) {
-//            return null;
-//        }
-//        return siteMap.getCurrentSquareValueOld(getX(), getY());
-//    }
-
     public SquareType getSquareValue(int x, int y) {
         if (x < 0 || y < 0) {
             return null;
