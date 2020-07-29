@@ -217,7 +217,7 @@ public class AppTest {
     public void givenTwoInputParameter_shouldAskForOne() throws Exception {
         App.main(new String[] {"a", "b"});
 
-        Assert.assertEquals(lastSysOutmessage, App.MustPassFileName);
+        Assert.assertEquals(lastSysOutmessage, Constants.MustPassFileName);
     }
 
     @Test
@@ -340,7 +340,7 @@ public class AppTest {
             App.main(new String[] { "a", "b" });
 
         } catch (java.lang.IllegalArgumentException e) {
-            assertOutputContainsString(App.MustPassFileName);
+            assertOutputContainsString(Constants.MustPassFileName);
         }
     }
 
@@ -349,14 +349,14 @@ public class AppTest {
         String fileName = "testFileName.txt";
         App.main(new String[] { fileName });
 
-        assertOutputContainsString(String.format(App.SiteMapLabel, fileName));
+        assertOutputContainsString(String.format(Constants.SiteMapLabel, fileName));
     }
 
     @Test
     public void givenAValidMapFile_shouldDisplayMapLabel() throws Exception {
         String fileName = "test-site-map.txt";
         App.main(new String[] { fileName });
-        assertOutputContainsString(App.AppHeadingLabel);
+        assertOutputContainsString(Constants.AppHeadingLabel);
     }
 
 }
@@ -448,8 +448,8 @@ public class AppTest {
             App.main(new String[] { "a", "b" });
 
         } catch (java.lang.IllegalArgumentException e) {
-            assertStdoutContains(App.MustPassFileName);
-            Assert.assertEquals(String.format(App.ExpectedOneArgGotNMsg, 2), e.getMessage());
+            assertStdoutContains(Constants.MustPassFileName);
+            Assert.assertEquals(String.format(Constants.ExpectedOneArgGotNMsg, 2), e.getMessage());
         }
     }
 
@@ -457,7 +457,7 @@ public class AppTest {
     public void givenAValidMapFile_shouldDisplayMapLabel() throws Exception {
         String fileName = "test-site-map.txt";
         App.main(new String[] { fileName });
-        assertStdoutContains(App.AppHeadingLabel);
+        assertStdoutContains(Constants.AppHeadingLabel);
     }
 
     @Test
@@ -465,7 +465,7 @@ public class AppTest {
         String fileName = "testFileName.txt";
         App.main(new String[] { fileName });
 
-        assertStdoutContains(String.format(App.SiteMapLabel, fileName));
+        assertStdoutContains(String.format(Constants.SiteMapLabel, fileName));
     }
 
 }

@@ -1,14 +1,21 @@
 package net.shawfire.scs;
 
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public enum CommandType {
     ADVANCE("a"), TURN_LEFT("l"), TURN_RIGHT("r"), QUIT("q");
 
     private String value;
-    private Integer amount;
-
-    public String getValue() {
-        return value;
-    }
+    private Integer amount = null;
+    private static Map<CommandType, String> descriptionMap = Stream.of(
+            new AbstractMap.SimpleImmutableEntry<>(CommandType.ADVANCE, "advance"),
+            new AbstractMap.SimpleImmutableEntry<>(CommandType.TURN_LEFT, "turn left"),
+            new AbstractMap.SimpleImmutableEntry<>(CommandType.TURN_RIGHT, "turn right"),
+            new AbstractMap.SimpleImmutableEntry<>(CommandType.QUIT, "quit"))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     public void setAmount(Integer amount) {
         this.amount = amount;
@@ -22,14 +29,13 @@ public enum CommandType {
         return this.value.equals(value);
     }
 
+    public String toString() {
+        return descriptionMap.get(this);
+    }
+
     CommandType(String value)
     {
         this.value = value;
-    }
-    CommandType(String value, Integer amount)
-    {
-        this(value);
-        this.amount = new Integer(amount);
     }
 
     public static CommandType fromString(String text) {

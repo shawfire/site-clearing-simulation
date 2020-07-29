@@ -1,15 +1,22 @@
 package net.shawfire.scs;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Bulldozer {
     public static String UnexpectedDirectionMessage = "Unexpected direction: ";
     public static String AttemptToDriveOutOfBoundsMessage = "Attempt to drive bulldozer out of site bearing: ";
     public static String AttemptAccessProtectedSquareMessage = "Attempt to move bulldozer to protected square type: ";
+    public static String CommandPrompt = "(l)eft, (r)ight, (a)dvance <n>, (q)uit: ";
 
     private Direction direction = Direction.EAST;
     private int x = -1;
     private int y = 0;
     private SiteMap siteMap;
     private Costs costs = new Costs();
+    private ArrayList<CommandPojo> commandList = new ArrayList<>();
 
     public Direction getDirection() {
         return direction;
@@ -100,9 +107,39 @@ public class Bulldozer {
         return siteMap.getSquareValue(getX(), getY());
     }
 
-
     public void changeDirection(ChangeInDirection command) {
         costs.incCost(ItemType.COMMUNICATION_OVERHEAD);
         setDirection(getDirection().changeDirection(command));
+    }
+
+    // Run simulation
+    public void run() throws IOException {
+        CommandPojo command;
+        do {
+            Utils.print(CommandPrompt);
+            // Reading data using readLine
+            command = Command.getCommand();
+            if (command == null) {
+                continue;
+            }
+            commandList.add(command);
+        } while (!command.getCommandType().equals("q"));
+
+        printCommandList();
+    }
+
+    public void printCommandList() {
+        Utils.println("\n" + Constants.CommandsEnteredHeading + "\n");
+        StringBuilder sb = new StringBuilder();
+        boolean notFirstLine = false;
+        for (CommandPojo command : commandList) {
+            if (notFirstLine) {
+                sb.append(", ");
+            } else {
+                notFirstLine = true;
+            }
+            sb.append(command.toString());
+        }
+        Utils.println(sb.toString());
     }
 }

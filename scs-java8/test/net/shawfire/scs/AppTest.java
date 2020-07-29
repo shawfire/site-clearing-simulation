@@ -1,12 +1,12 @@
 package net.shawfire.scs;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.when;
 
 import org.mockito.Mockito;
 
@@ -42,8 +42,8 @@ public class AppTest {
             App.main(new String[] { "a", "b" });
 
         } catch (java.lang.IllegalArgumentException e) {
-            assertStdoutContains(App.MustPassFileName);
-            Assert.assertEquals(String.format(App.ExpectedOneArgGotNMsg, 2), e.getMessage());
+            assertStdoutContains(Constants.MustPassFileName);
+            Assert.assertEquals(String.format(Constants.ExpectedOneArgGotNMsg, 2), e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class AppTest {
         App.main(new String[] { fileName });
 
         // Validate welcome message
-        assertStdoutContains(App.AppHeadingLabel);
+        assertStdoutContains(Constants.AppHeadingLabel);
 
         // Validate siteMap file display
         String expectedSiteMapDisplay =
@@ -65,22 +65,33 @@ public class AppTest {
         assertStdoutContains(expectedSiteMapDisplay);
 
         // Validate initial command instructions
-        assertStdoutContains(App.InitialBulldozerPositionMsg);
+        assertStdoutContains(Constants.InitialBulldozerPositionMsg);
 
         // validate command prompt
-        assertStdoutContains(App.MovementPrompt);
+        assertStdoutContains(Constants.MovementPrompt);
+        BufferedReader reader = Mockito.mock(BufferedReader.class);
+        when(reader.readLine())
+                .thenReturn("a 4")
+                .thenReturn("r")
+                .thenReturn("a 4")
+                .thenReturn("l")
+                .thenReturn("a 2")
+                .thenReturn("a 4")
+                .thenReturn("l")
+                .thenReturn("q");
 
         // Simulation has ended message
-        assertStdoutContains(App.CommandsEnteredHeading);
+        assertStdoutContains(Constants.CommandsEnteredHeading);
 
         // Validate list of commands is the same as provide from test file (substituting stdin)
+        assertStdoutContains("advance 4, turn right, advance 4, turn left, advance 2, advance 4, turn left, quit");
 
         // Validate cost heading
 
         // Validate cost summary
 
         // Validate closing message
-        assertStdoutContains(App.ThankYouMsg);
+        assertStdoutContains(Constants.ThankYouMsg);
     }
 
     @Test(expected = java.io.FileNotFoundException.class)
@@ -88,7 +99,7 @@ public class AppTest {
         String fileName = "testFileName.txt";
         App.main(new String[] { fileName });
 
-        assertStdoutContains(String.format(App.SiteMapLabel, fileName));
+        assertStdoutContains(String.format(Constants.SiteMapLabel, fileName));
     }
 
 }

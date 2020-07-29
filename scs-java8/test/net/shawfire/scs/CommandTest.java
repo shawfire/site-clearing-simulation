@@ -25,11 +25,11 @@ public class CommandTest {
         when(reader.readLine()).thenReturn("a 4").thenReturn("l").thenReturn("r").thenReturn("q");
         Command.setSysInDelegate(() -> reader.readLine());
         Command command = new Command();
-        CommandType aCommand;
-        Assert.assertEquals((aCommand = command.getCommand()), CommandType.ADVANCE);
-        Assert.assertEquals(aCommand.getAmount(), new Integer(4));
-        Assert.assertEquals(command.getCommand(), CommandType.TURN_LEFT);
-        Assert.assertEquals(command.getCommand(), CommandType.TURN_RIGHT);
+        CommandPojo aCommand;
+        Assert.assertEquals((aCommand = command.getCommand()).getCommandType(), CommandType.ADVANCE);
+        Assert.assertEquals(aCommand.getAmount().get(), new Integer(4));
+        Assert.assertEquals(command.getCommand().getCommandType(), CommandType.TURN_LEFT);
+        Assert.assertEquals(command.getCommand().getCommandType(), CommandType.TURN_RIGHT);
         Assert.assertEquals(command.getCommand(), CommandType.QUIT);
     }
 
@@ -48,7 +48,7 @@ public class CommandTest {
         when(reader.readLine()).thenReturn("a");
         Command.setSysInDelegate(() -> reader.readLine());
         Command command = new Command();
-        CommandType aCommand;
+        CommandPojo aCommand;
         Assert.assertEquals((aCommand = command.getCommand()), CommandType.ADVANCE);
     }
 
@@ -58,18 +58,18 @@ public class CommandTest {
         when(reader.readLine()).thenReturn("a five");
         Command.setSysInDelegate(() -> reader.readLine());
         Command command = new Command();
-        CommandType aCommand;
+        CommandPojo aCommand;
         Assert.assertEquals((aCommand = command.getCommand()), CommandType.ADVANCE);
     }
 
     //TODO fix this or remove
-//    @Test
-//    public void testReadInstructions() throws Exception {
-//        BufferedReader reader = Mockito.mock(BufferedReader.class);
-//        when(reader.readLine()).thenReturn("q");
-//        Command.setSysInDelegate(() -> reader.readLine());
-//        Instructions instructions = new Instructions();
-//        instructions.readInstructions();
+    @Test
+    public void testReadInstructions() throws Exception {
+        BufferedReader reader = Mockito.mock(BufferedReader.class);
+        when(reader.readLine()).thenReturn("q");
+        Command.setSysInDelegate(() -> reader.readLine());
+        Commands commands = new Commands();
+        commands.readCommands();
 //        Mockito.verify(stdout).println(Mockito.contains(CommandType.QUIT.toString()));
-//    }
+    }
 }
