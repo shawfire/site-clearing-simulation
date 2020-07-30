@@ -29,7 +29,7 @@ public class CommandTest {
         Assert.assertEquals((aCommand = command.getCommand()).getCommandType(), CommandType.ADVANCE);
         Assert.assertEquals(aCommand.getAmount().get(), new Integer(4));
         Assert.assertEquals(command.getCommand().getCommandType(), CommandType.TURN_LEFT);
-        Assert.assertEquals(command.getCommand().getCommandType(), CommandType.TURN_RIGHT);
+        Assert.assertEquals(command.getCommand(), CommandType.TURN_RIGHT);
         Assert.assertEquals(command.getCommand(), CommandType.QUIT);
     }
 

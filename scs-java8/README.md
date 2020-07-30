@@ -6,6 +6,7 @@
 <details><summary>TODO</summary>
 
 - Add javadoc comments
+- Check for invalid command input
 - Check for invalid file
 - Add logging
 - Accept bulldozer directives

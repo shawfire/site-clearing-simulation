@@ -29,7 +29,7 @@ public class BulldozerTest {
         Assert.assertEquals("Value of square unexpected: ", squareValue, bulldozer.getCurrentSquareValue());
     }
 
-    public void checkItemCosts(ItemType itemType, Integer expectedAmount) {
+    public void checkItemQuantity(ItemType itemType, Integer expectedAmount) {
         Assert.assertEquals(
                 String.format("Unexpected Item [%1$s] cost: ", itemType),
                 expectedAmount, bulldozer.getCost(itemType));
@@ -41,16 +41,16 @@ public class BulldozerTest {
         // check initial values
         bulldozer = new Bulldozer(siteMap);
         checkDirectionPosAndSquareValue(Direction.EAST, -1, 0, null);
-        checkItemCosts(ItemType.COMMUNICATION_OVERHEAD, INTEGER_ZERO);
-        checkItemCosts(ItemType.PAINT_DAMAGE, INTEGER_ZERO);
-        checkItemCosts(ItemType.FUEL_USAGE, INTEGER_ZERO);
+        checkItemQuantity(ItemType.COMMUNICATION_OVERHEAD, INTEGER_ZERO);
+        checkItemQuantity(ItemType.PAINT_DAMAGE, INTEGER_ZERO);
+        checkItemQuantity(ItemType.FUEL_USAGE, INTEGER_ZERO);
 
         // check a valid move by one square
         checkDirectionAndSquareValue(Direction.EAST, 0, 0, SquareType.PLAIN);
         bulldozer.move(1);
-        checkItemCosts(ItemType.COMMUNICATION_OVERHEAD, INTEGER_ONE);
+        checkItemQuantity(ItemType.COMMUNICATION_OVERHEAD, INTEGER_ONE);
         checkDirectionPosAndSquareValue(Direction.EAST, 0, 0, SquareType.CLEARED);
-        checkItemCosts(ItemType.FUEL_USAGE, INTEGER_ONE);
+        checkItemQuantity(ItemType.FUEL_USAGE, INTEGER_ONE);
 
         // check a valid move by multiple squares
         checkDirectionAndSquareValue(Direction.EAST, 1, 0, SquareType.PLAIN);
@@ -58,21 +58,20 @@ public class BulldozerTest {
         bulldozer.move(2);
         checkDirectionAndSquareValue(Direction.EAST, 1, 0, SquareType.CLEARED);
         checkDirectionPosAndSquareValue(Direction.EAST, 2, 0, SquareType.CLEARED);
-        checkItemCosts(ItemType.PAINT_DAMAGE, INTEGER_ZERO);
-        checkItemCosts(ItemType.FUEL_USAGE, new Integer(4));
-
+        checkItemQuantity(ItemType.PAINT_DAMAGE, INTEGER_ZERO);
+        checkItemQuantity(ItemType.FUEL_USAGE, new Integer(4));
 
         // test change in direction to SOUTH
-        checkItemCosts(ItemType.COMMUNICATION_OVERHEAD, new Integer(2));
+        checkItemQuantity(ItemType.COMMUNICATION_OVERHEAD, new Integer(2));
         bulldozer.changeDirection(ChangeInDirection.RIGHT);
-        checkItemCosts(ItemType.COMMUNICATION_OVERHEAD, new Integer(3));
+        checkItemQuantity(ItemType.COMMUNICATION_OVERHEAD, new Integer(3));
         checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 0, SquareType.CLEARED);
 
         // move south
         checkDirectionAndSquareValue(Direction.SOUTH, 2, 2, SquareType.ROCKY);
         bulldozer.move(2);
         checkDirectionPosAndSquareValue(Direction.SOUTH, 2, 2, SquareType.CLEARED);
-        checkItemCosts(ItemType.FUEL_USAGE, new Integer(7));
+        checkItemQuantity(ItemType.FUEL_USAGE, new Integer(7));
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
@@ -80,18 +79,18 @@ public class BulldozerTest {
         // Move beyond the east border
         bulldozer = new Bulldozer(siteMap);
         checkDirectionPosAndSquareValue(Direction.EAST, -1, 0, null);
-        checkItemCosts(ItemType.PAINT_DAMAGE, INTEGER_ZERO);
+        checkItemQuantity(ItemType.PAINT_DAMAGE, INTEGER_ZERO);
         checkDirectionAndSquareValue(Direction.EAST, 7, 0, SquareType.PLAIN);
         bulldozer.move(8);
         bulldozer.changeDirection(ChangeInDirection.RIGHT);
         checkDirectionPosAndSquareValue(Direction.SOUTH, 7, 0, SquareType.CLEARED);
-        checkItemCosts(ItemType.FUEL_USAGE, new Integer(9));
-        checkItemCosts(ItemType.DESTRUCTION_PROTECTED_TREE, INTEGER_ZERO);
+        checkItemQuantity(ItemType.FUEL_USAGE, new Integer(9));
+        checkItemQuantity(ItemType.DESTRUCTION_PROTECTED_TREE, INTEGER_ZERO);
         try {
             bulldozer.move(1);
         } catch (Exception e) {
             checkDirectionPosAndSquareValue(Direction.SOUTH, 7, 1, SquareType.PRESERVE_TREE);
-            checkItemCosts(ItemType.DESTRUCTION_PROTECTED_TREE, new Integer(10));
+            checkItemQuantity(ItemType.DESTRUCTION_PROTECTED_TREE, new Integer(1));
             Assert.assertEquals(
                     Bulldozer.AttemptAccessProtectedSquareMessage + SquareType.PRESERVE_TREE,
                     e.getMessage());
@@ -107,8 +106,8 @@ public class BulldozerTest {
         try {
             bulldozer.move(11);
         } catch (Exception e) {
-            checkItemCosts(ItemType.FUEL_USAGE, new Integer(11));
-            checkItemCosts(ItemType.PAINT_DAMAGE, new Integer(2));
+            checkItemQuantity(ItemType.FUEL_USAGE, new Integer(11));
+            checkItemQuantity(ItemType.PAINT_DAMAGE, new Integer(1));
             Assert.assertEquals(
                     Bulldozer.AttemptToDriveOutOfBoundsMessage + Direction.EAST,
                     e.getMessage());

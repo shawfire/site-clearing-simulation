@@ -87,8 +87,12 @@ public class AppTest {
         assertStdoutContains("advance 4, turn right, advance 4, turn left, advance 2, advance 4, turn left, quit");
 
         // Validate cost heading
+        assertStdoutContains(Constants.CostsHeading);
 
         // Validate cost summary
+        assertStdoutContains(Constants.CostColumnHeading);
+
+
 
         // Validate closing message
         assertStdoutContains(Constants.ThankYouMsg);

@@ -2,8 +2,6 @@ package net.shawfire.scs;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Bulldozer {
     public static String UnexpectedDirectionMessage = "Unexpected direction: ";
@@ -65,7 +63,7 @@ public class Bulldozer {
     }
 
     public void move(int n) {
-        costs.incCost(ItemType.COMMUNICATION_OVERHEAD);
+        costs.incItemQuantity(ItemType.COMMUNICATION_OVERHEAD);
         int count = 0;
         while (count++ < n) {
             switch (getDirection()) {
@@ -79,16 +77,16 @@ public class Bulldozer {
             checkOutOfBounds();
 
             if (count < n && SquareType.TREE_REMOVAL == getCurrentSquareValue()) {
-                costs.incItemCost(ItemType.PAINT_DAMAGE, getCurrentSquareValue());
+                costs.incItemQuantity(ItemType.PAINT_DAMAGE);
             }
 
             if (SquareType.PRESERVE_TREE == getCurrentSquareValue()) {
-                costs.incItemCost(ItemType.DESTRUCTION_PROTECTED_TREE, getCurrentSquareValue());
+                costs.incItemQuantity(ItemType.DESTRUCTION_PROTECTED_TREE);
                 throw new IllegalArgumentException(AttemptAccessProtectedSquareMessage + SquareType.PRESERVE_TREE);
             }
 
             // Add cost and update site map
-            costs.incItemCost(ItemType.FUEL_USAGE, getCurrentSquareValue());
+            costs.incItemFuelQuantity(getCurrentSquareValue());
             getSiteMap().clearSquare(getX(), getY());
         }
     }
@@ -108,7 +106,7 @@ public class Bulldozer {
     }
 
     public void changeDirection(ChangeInDirection command) {
-        costs.incCost(ItemType.COMMUNICATION_OVERHEAD);
+        costs.incItemQuantity(ItemType.COMMUNICATION_OVERHEAD);
         setDirection(getDirection().changeDirection(command));
     }
 
@@ -123,9 +121,21 @@ public class Bulldozer {
                 continue;
             }
             commandList.add(command);
+            processCommand(command);
         } while (!command.getCommandType().equals("q"));
-
+        costs.incItemQuantity(ItemType.UNCLEARED_SQUARE, siteMap.getUnclearedSquareCount());
         printCommandList();
+        printCosts();
+    }
+
+    public void processCommand(CommandPojo command) {
+        switch (command.getCommandType()) {
+            case ADVANCE: move(command.getAmount().get().intValue()); break;
+            case TURN_LEFT: changeDirection(ChangeInDirection.LEFT); break;
+            case TURN_RIGHT: changeDirection(ChangeInDirection.RIGHT); break;
+            case QUIT: break;
+            default: break;
+        }
     }
 
     public void printCommandList() {
@@ -141,5 +151,10 @@ public class Bulldozer {
             sb.append(command.toString());
         }
         Utils.println(sb.toString());
+    }
+
+    public void printCosts() {
+        costs.displayCosts();
+
     }
 }

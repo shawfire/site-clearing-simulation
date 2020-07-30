@@ -8,6 +8,24 @@ public class SiteMap {
     private SquareType[][] siteMap;
     private int maxX;
     private int maxY;
+    private int protectedTreeCount = 0;
+    private int clearedSquareCount = 0;
+
+    public void incProtectedTreeCount() {
+        this.protectedTreeCount += 1;
+    }
+
+    public void incClearedSquareCount() {
+        this.clearedSquareCount++;
+    }
+
+    public int getProtectedTreeCount() {
+        return protectedTreeCount;
+    }
+
+    public int getClearedSquareCount() {
+        return clearedSquareCount;
+    }
 
     public int getMaxX() {
         return maxX;
@@ -19,6 +37,7 @@ public class SiteMap {
 
     public void clearSquare(int x, int y) {
         siteMap[x][y] = SquareType.CLEARED;
+        incClearedSquareCount();
     }
 
     public SquareType getSquareValue(int x, int y) {
@@ -26,6 +45,10 @@ public class SiteMap {
             return null;
         }
         return siteMap[x][y];
+    }
+
+    public int getUnclearedSquareCount() {
+        return maxX * maxY - getProtectedTreeCount() - getClearedSquareCount();
     }
 
     /**
@@ -75,6 +98,9 @@ public class SiteMap {
             String row = siteMapList.get(y);
             for (int x=0; x < maxX; x++) {
                 siteMap[x][y] = SquareType.fromString(row.substring(x, x+1));
+                if (siteMap[x][y] == SquareType.PRESERVE_TREE) {
+                    incProtectedTreeCount();
+                }
             }
         }
     }
