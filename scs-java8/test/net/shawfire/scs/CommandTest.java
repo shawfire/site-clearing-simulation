@@ -29,7 +29,7 @@ public class CommandTest {
 
     @Test
     public void testGetCommand() throws Exception {
-        when(reader.readLine()).thenReturn("a 4").thenReturn("l").thenReturn("r").thenReturn("q");
+        when(reader.readLine()).thenReturn("Advance 4").thenReturn("l").thenReturn("r").thenReturn("q");
         Command.setSysInDelegate(() -> reader.readLine());
         Assert.assertEquals((aCommand = command.getCommand()).getCommandType(), CommandType.ADVANCE);
         Assert.assertEquals(aCommand.getAmount().get(), new Integer(4));

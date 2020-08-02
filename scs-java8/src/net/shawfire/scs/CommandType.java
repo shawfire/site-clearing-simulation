@@ -8,7 +8,8 @@ import java.util.stream.Stream;
 public enum CommandType {
     ADVANCE("a"), TURN_LEFT("l"), TURN_RIGHT("r"), QUIT("q");
 
-    public static String ValidCommandLineRegex = "^[ ]*(a[ ]+[0-9]+|[lrq])[ ]*$";
+    // Only mandate the first character of the command to match
+    public static String ValidCommandLineRegex = "^[ ]*([aA][a-z]*[ ]+[0-9]+|[lLrRqQ][a-z]*)[ ]*$";
 
     private String value;
     private Integer amount = null;
@@ -42,7 +43,8 @@ public enum CommandType {
 
     public static CommandType fromString(String text) {
         for (CommandType x : CommandType.values()) {
-            if (x.equals(text)) {
+            // Compare only the first character of the command ignoring case
+            if (x.equals(text.substring(0,1).toLowerCase())) {
                 return x;
             }
         }
