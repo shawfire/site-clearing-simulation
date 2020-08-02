@@ -7,10 +7,9 @@ public class Constants {
     public static String ExpectedOneArgGotNMsg = "Expected 1 argument but received: %1d";
     public static String InitialBulldozerPositionMsg = "The bulldozer is currently located at the Northern edge of the site, immediately to the West of the site, and facing East.";
     public static String MovementPrompt = "(l)eft, (r)ight, (a)dvance <n>, (q)uit: ";
-    public static String CommandsEnteredHeading = "The simulation has ended at your request. These are the commands you issued:";
+    public static String CommandsEnteredHeading = "These are the commands you issued:";
+    public static String SimulationEndedAtYourRequestMsg = "\nThe simulation has ended at your request. ";
     public static String CostsHeading = "The costs for this land clearing operation were:";
-    public static String ItemColumnHeading = "Item";
-    public static String QuantityColumnHeading = "Item";
     public static String CostColumnHeading = "Item";
     public static String CommunicationItemLabel = "communication overhead";
     public static String FuelItemLabel = "fuel usage";

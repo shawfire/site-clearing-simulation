@@ -1,15 +1,15 @@
 package net.shawfire.scs;
 
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-
 import org.mockito.Mockito;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 
-public class AppTest {
+public class AppTestMoveBeyoundSiteBoundaries {
 
     PrintStream stdout = Mockito.mock(PrintStream.class);
     InputStream stdin;
@@ -21,31 +21,12 @@ public class AppTest {
     @Before
     public void beforeEachTest() {
         System.setOut(stdout);
-//        String fileName = "/test-input-commands.txt";
-//        stdin = SiteMap.class.getResourceAsStream(fileName);
-//        System.setIn(stdin);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void givenTwoInputParameter_shouldThrowException() throws Exception {
-        App.main(new String[] { "a", "b" });
-    }
-
+    @Ignore("This test works in isolation")
     @Test
-    public void givenTwoInputParameter_shouldAskForOne() throws Exception {
-
-        try {
-            App.main(new String[] { "a", "b" });
-
-        } catch (java.lang.IllegalArgumentException e) {
-            assertStdoutContains(Constants.MustPassFileName);
-            Assert.assertEquals(String.format(Constants.ExpectedOneArgGotNMsg, 2), e.getMessage());
-        }
-    }
-
-    @Test
-    public void givenAValidMapFile_and_validInputCommands() throws Exception {
-        String fileName = "/test-input-commands.txt";
+    public void testRemoveProtectedTree() throws Exception {
+        String fileName = "/test-input-commands-mbsb.txt";
         stdin = SiteMap.class.getResourceAsStream(fileName);
         System.setIn(stdin);
 
@@ -70,12 +51,13 @@ public class AppTest {
         // validate command prompt
         assertStdoutContains(Constants.MovementPrompt);
 
+        assertStdoutContains("Simulation ended prematurely. Reason - Attempt to drive bulldozer out of site bearing: EAST");
+
         // Simulation has ended message
-        assertStdoutContains(Constants.SimulationEndedAtYourRequestMsg);
         assertStdoutContains(Constants.CommandsEnteredHeading);
 
         // Validate list of commands is the same as provide from test file (substituting stdin)
-        assertStdoutContains("advance 4, turn right, advance 4, turn left, advance 2, advance 4, turn left, quit");
+        assertStdoutContains("advance 11");
 
         // Validate cost heading
         assertStdoutContains(Constants.CostsHeading);
@@ -84,22 +66,14 @@ public class AppTest {
         assertStdoutContains(Constants.CostColumnHeading);
 
         assertStdoutContains("Item                           Quantity      Cost");
-        assertStdoutContains("communication overhead                7         7");
-        assertStdoutContains("fuel usage                           19        19");
-        assertStdoutContains("uncleared squares                    34       102");
+        assertStdoutContains("communication overhead                1         1");
+        assertStdoutContains("fuel usage                           11        11");
+        assertStdoutContains("uncleared squares                    38       114");
         assertStdoutContains("destruction of protected tree         0         0");
         assertStdoutContains("paint damage to bulldozer             1         2");
 
         // Validate closing message
         assertStdoutContains(Constants.ThankYouMsg);
-    }
-
-    @Test(expected = java.io.FileNotFoundException.class)
-    public void givenInvalidSiteMapFile_shouldReportError() throws Exception {
-        String fileName = "testFileName.txt";
-        App.main(new String[] { fileName });
-
-        assertStdoutContains(String.format(Constants.SiteMapLabel, fileName));
     }
 
 }

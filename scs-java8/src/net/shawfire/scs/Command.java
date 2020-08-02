@@ -1,6 +1,7 @@
 package net.shawfire.scs;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
@@ -21,6 +22,9 @@ public class Command {
         do {
             Utils.print(Constants.CommandPrompt);
             input = sysInDelegate.readLine();
+            if (input == null) {
+                throw new IOException("Null input received.");
+            }
             if (input.matches(CommandType.ValidCommandLineRegex)) {
                 gettingValidCommand = false;
             } else {

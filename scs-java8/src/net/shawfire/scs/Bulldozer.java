@@ -7,6 +7,7 @@ public class Bulldozer {
     public static String UnexpectedDirectionMessage = "Unexpected direction: ";
     public static String AttemptToDriveOutOfBoundsMessage = "Attempt to drive bulldozer out of site bearing: ";
     public static String AttemptAccessProtectedSquareMessage = "Attempt to move bulldozer to protected square type: ";
+    public static String SimulationEndedPrematurelyMessage = "\nSimulation ended prematurely. Reason - %s\n";
 
     private Direction direction = Direction.EAST;
     private int x = -1;
@@ -112,15 +113,20 @@ public class Bulldozer {
     // Run simulation
     public void run() throws IOException {
         CommandPojo command;
-        do {
-            // Reading data using readLine
-            command = Command.getCommand();
-            if (command == null) {
-                continue;
-            }
-            commandList.add(command);
-            processCommand(command);
-        } while (!command.getCommandType().equals("q"));
+        try {
+            do {
+                // Reading data using readLine
+                command = Command.getCommand();
+                if (command == null) {
+                    continue;
+                }
+                commandList.add(command);
+                processCommand(command);
+            } while (!command.getCommandType().equals("q"));
+            Utils.print(Constants.SimulationEndedAtYourRequestMsg);
+        } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            Utils.println(String.format(SimulationEndedPrematurelyMessage, e.getMessage()));
+        }
         costs.incItemQuantity(ItemType.UNCLEARED_SQUARE, siteMap.getUnclearedSquareCount());
         printCommandList();
         printCosts();
@@ -137,7 +143,7 @@ public class Bulldozer {
     }
 
     public void printCommandList() {
-        Utils.println("\n" + Constants.CommandsEnteredHeading + "\n");
+        Utils.println(Constants.CommandsEnteredHeading + "\n");
         StringBuilder sb = new StringBuilder();
         boolean notFirstLine = false;
         for (CommandPojo command : commandList) {
@@ -153,6 +159,5 @@ public class Bulldozer {
 
     public void printCosts() {
         costs.displayCosts();
-
     }
 }
