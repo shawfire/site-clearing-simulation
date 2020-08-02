@@ -59,7 +59,7 @@ public class App {
         // Run simulation
         bulldozer.run();
 
-        System.out.print(Constants.ThankYouMsg + "\n");
+        Utils.println(Constants.ThankYouMsg);
     }
 
 }

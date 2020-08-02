@@ -13,19 +13,24 @@ import static org.mockito.Mockito.when;
 public class CommandTest {
 
     PrintStream stdout = Mockito.mock(PrintStream.class);
+    Command command = new Command();
+    CommandPojo aCommand;
+    BufferedReader reader = Mockito.mock(BufferedReader.class);
+
+    private void assertStdoutContains(String str) {
+        Mockito.verify(stdout, Mockito.atLeastOnce()).print(Mockito.contains(str));
+    }
 
     @Before
     public void beforeEachTest() {
         System.setOut(stdout);
+        Command.setSysInDelegate(() -> reader.readLine());
     }
 
     @Test
     public void testGetCommand() throws Exception {
-        BufferedReader reader = Mockito.mock(BufferedReader.class);
         when(reader.readLine()).thenReturn("a 4").thenReturn("l").thenReturn("r").thenReturn("q");
         Command.setSysInDelegate(() -> reader.readLine());
-        Command command = new Command();
-        CommandPojo aCommand;
         Assert.assertEquals((aCommand = command.getCommand()).getCommandType(), CommandType.ADVANCE);
         Assert.assertEquals(aCommand.getAmount().get(), new Integer(4));
         Assert.assertEquals(command.getCommand().getCommandType(), CommandType.TURN_LEFT);
@@ -33,43 +38,32 @@ public class CommandTest {
         Assert.assertEquals(command.getCommand(), CommandType.QUIT);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void testGetInvalidCommand() throws Exception {
-        BufferedReader reader = Mockito.mock(BufferedReader.class);
-        when(reader.readLine()).thenReturn("x");
-        Command.setSysInDelegate(() -> reader.readLine());
-        Command command = new Command();
-        command.getCommand();
-    }
-
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void testGetCommandWithNoAmount() throws Exception {
-        BufferedReader reader = Mockito.mock(BufferedReader.class);
-        when(reader.readLine()).thenReturn("a");
-        Command.setSysInDelegate(() -> reader.readLine());
-        Command command = new Command();
-        CommandPojo aCommand;
-        Assert.assertEquals((aCommand = command.getCommand()), CommandType.ADVANCE);
-    }
-
-    @Test(expected = java.lang.NumberFormatException.class)
-    public void testGetCommandWithInvalidAmount() throws Exception {
-        BufferedReader reader = Mockito.mock(BufferedReader.class);
-        when(reader.readLine()).thenReturn("a five");
-        Command.setSysInDelegate(() -> reader.readLine());
-        Command command = new Command();
-        CommandPojo aCommand;
-        Assert.assertEquals((aCommand = command.getCommand()), CommandType.ADVANCE);
-    }
-
-    //TODO fix this or remove
     @Test
-    public void testReadInstructions() throws Exception {
-        BufferedReader reader = Mockito.mock(BufferedReader.class);
-        when(reader.readLine()).thenReturn("q");
-        Command.setSysInDelegate(() -> reader.readLine());
-        Commands commands = new Commands();
-        commands.readCommands();
-//        Mockito.verify(stdout).println(Mockito.contains(CommandType.QUIT.toString()));
+    public void testGetInvalidCommand() throws Exception {
+        when(reader.readLine()).thenReturn("x").thenReturn("").thenReturn("a 5a")
+                .thenReturn("Z").thenReturn("q 6").thenReturn("q");
+        Assert.assertEquals((aCommand = command.getCommand()), CommandType.QUIT);
+        assertStdoutContains(String.format(Command.UnexpectedCommandReceivedMsg, "x"));
+        assertStdoutContains(String.format(Command.UnexpectedCommandReceivedMsg, ""));
+        assertStdoutContains(String.format(Command.UnexpectedCommandReceivedMsg, "a 5a"));
+        assertStdoutContains(String.format(Command.UnexpectedCommandReceivedMsg, "Z"));
+        assertStdoutContains(String.format(Command.UnexpectedCommandReceivedMsg, "q 6"));
     }
+
+    @Test
+    public void testGetCommandWithNoAmount() throws Exception {
+        when(reader.readLine()).thenReturn("a").thenReturn("q");
+        Command.setSysInDelegate(() -> reader.readLine());
+        Assert.assertEquals((aCommand = command.getCommand()), CommandType.QUIT);
+        assertStdoutContains(String.format(Command.UnexpectedCommandReceivedMsg, "a"));
+    }
+
+    @Test
+    public void testGetCommandWithInvalidAmount() throws Exception {
+        when(reader.readLine()).thenReturn("a five").thenReturn("q");
+        Command.setSysInDelegate(() -> reader.readLine());
+        Assert.assertEquals((aCommand = command.getCommand()), CommandType.QUIT);
+        assertStdoutContains(String.format(Command.UnexpectedCommandReceivedMsg, "a five"));
+    }
+
 }

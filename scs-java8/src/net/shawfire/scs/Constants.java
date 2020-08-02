@@ -20,4 +20,5 @@ public class Constants {
     public static String TotalSeparator = "----";
     public static String TotalLabel = "Total";
     public static String ThankYouMsg = "\nThankyou for using the Aconex site clearing simulator.\n";
+    public static String CommandPrompt = "(l)eft, (r)ight, (a)dvance <n>, (q)uit: ";
 }

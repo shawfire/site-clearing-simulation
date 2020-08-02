@@ -7,7 +7,6 @@ public class Bulldozer {
     public static String UnexpectedDirectionMessage = "Unexpected direction: ";
     public static String AttemptToDriveOutOfBoundsMessage = "Attempt to drive bulldozer out of site bearing: ";
     public static String AttemptAccessProtectedSquareMessage = "Attempt to move bulldozer to protected square type: ";
-    public static String CommandPrompt = "(l)eft, (r)ight, (a)dvance <n>, (q)uit: ";
 
     private Direction direction = Direction.EAST;
     private int x = -1;
@@ -114,7 +113,6 @@ public class Bulldozer {
     public void run() throws IOException {
         CommandPojo command;
         do {
-            Utils.print(CommandPrompt);
             // Reading data using readLine
             command = Command.getCommand();
             if (command == null) {

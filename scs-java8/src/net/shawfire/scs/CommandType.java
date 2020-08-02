@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 public enum CommandType {
     ADVANCE("a"), TURN_LEFT("l"), TURN_RIGHT("r"), QUIT("q");
 
+    public static String ValidCommandLineRegex = "^[ ]*(a[ ]+[0-9]+|[lrq])[ ]*$";
+
     private String value;
     private Integer amount = null;
     private static Map<CommandType, String> descriptionMap = Stream.of(
@@ -16,6 +18,10 @@ public enum CommandType {
             new AbstractMap.SimpleImmutableEntry<>(CommandType.TURN_RIGHT, "turn right"),
             new AbstractMap.SimpleImmutableEntry<>(CommandType.QUIT, "quit"))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+    public String toString() {
+        return descriptionMap.get(this);
+    }
 
     public void setAmount(Integer amount) {
         this.amount = amount;
@@ -27,10 +33,6 @@ public enum CommandType {
 
     public boolean equals(String value) {
         return this.value.equals(value);
-    }
-
-    public String toString() {
-        return descriptionMap.get(this);
     }
 
     CommandType(String value)
