@@ -5,6 +5,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
+/**
+ * This class is used to read a command from the input stream.
+ * If the command is an invalid command; another command will be requested.
+ * Only one command is processed per line received.
+ * Any additional spaces before, embedding or suffixing a command are ignored.
+ * Only the first letter of the command is used and the case is ignored
+ * (for example: `q` `Quit` are equivalent and will stop the simulation).
+ * As the `Advance` command also has a corresponding amount the `CommandPojo` is returned
+ * which supports an `Optional` `amount`.
+ */
 public class Command {
 
     public static String UnexpectedCommandReceivedMsg = "Unexpected command received: \"%s\"";

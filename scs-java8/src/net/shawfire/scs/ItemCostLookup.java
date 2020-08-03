@@ -2,6 +2,10 @@ package net.shawfire.scs;
 
 import java.util.EnumMap;
 
+/**
+ * ItemCostLookup provides a lookup for ItemType costs per individual item.
+ * To get the cost the quantity is multiplied by the lookup amount for an ItemType.
+ */
 public class ItemCostLookup {
     public static EnumMap<ItemType,Integer> costs = new EnumMap<>(ItemType.class);
     static {

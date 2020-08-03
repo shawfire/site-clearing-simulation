@@ -21,9 +21,6 @@ public class AppTest {
     @Before
     public void beforeEachTest() {
         System.setOut(stdout);
-//        String fileName = "/test-input-commands.txt";
-//        stdin = SiteMap.class.getResourceAsStream(fileName);
-//        System.setIn(stdin);
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
@@ -89,6 +86,8 @@ public class AppTest {
         assertStdoutContains("uncleared squares                    34       102");
         assertStdoutContains("destruction of protected tree         0         0");
         assertStdoutContains("paint damage to bulldozer             1         2");
+        assertStdoutContains("----");
+        assertStdoutContains("Total                                         130");
 
         // Validate closing message
         assertStdoutContains(Constants.ThankYouMsg);

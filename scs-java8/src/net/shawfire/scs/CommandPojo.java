@@ -2,6 +2,11 @@ package net.shawfire.scs;
 
 import java.util.Optional;
 
+/**
+ * As the `Advance` command also has a corresponding amount the `CommandPojo` is used
+ * which supports an `Optional` `amount`.
+ * This class enables a Command to be compared, displayed or stored in a Map lookup.
+ */
 public class CommandPojo {
     private CommandType commandType;
     private Optional<Integer> amount = Optional.empty();

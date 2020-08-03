@@ -32,7 +32,7 @@ public class BulldozerTest {
     public void checkItemQuantity(ItemType itemType, Integer expectedAmount) {
         Assert.assertEquals(
                 String.format("Unexpected Item [%1$s] cost: ", itemType),
-                expectedAmount, bulldozer.getCost(itemType));
+                expectedAmount, bulldozer.getQuantity(itemType));
     }
 
     @Test

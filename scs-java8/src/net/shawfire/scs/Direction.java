@@ -1,5 +1,9 @@
 package net.shawfire.scs;
 
+/**
+ * Direction enum provides a mechanism to change the direction left or right
+ * the four different direction orientations namely: `EAST`, `SOUTH`, `WEST`, and `NORTH`
+ */
 public enum Direction {
     EAST, SOUTH, WEST, NORTH;
 

@@ -3,6 +3,16 @@ package net.shawfire.scs;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * `SiteMap` is a class which contains a grid of `SquareType` (siteMap).
+ * siteMap is a two dimensional array of SquareType where
+ * siteMap[0][0] is the top left corner, where x = 0, y = 0 respectively.
+ * A site map text file, that is found on the classpath can be used to
+ * initialise the grid.
+ * This class has the ability to display the siteMap and update the squares
+ * as they are cleared.
+ * This class provides access to each of the SquareType locations on the siteMap grid.
+ */
 public class SiteMap {
 
     private SquareType[][] siteMap;

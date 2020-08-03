@@ -3,6 +3,18 @@ package net.shawfire.scs;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The Bulldozer class accepts a siteMap within the constructor.
+ * The bulldozer accepts commands from the input stream.
+ * If the command is an invalid command; another command will be requested.
+ * Only one command is processed per line received.
+ * If a command causes the bulldozer to clear a protected tree or
+ * to drive beyond the bounds of the site the simulation will finish.
+ * Otherwise the Quit command can be sent to stop the simulation.
+ * Only the first letter of the command is used and the case is ignored
+ * (for example: `q` `Quit` are equivalent and will stop the simulation).
+ * After the simulation is complete a cost summary is displayed.
+ */
 public class Bulldozer {
     public static String UnexpectedDirectionMessage = "Unexpected direction: ";
     public static String AttemptToDriveOutOfBoundsMessage = "Attempt to drive bulldozer out of site bearing: ";
@@ -44,8 +56,8 @@ public class Bulldozer {
         return costs;
     }
 
-    public Integer getCost(ItemType itemType) {
-        return getCosts().quantities.get(itemType);
+    public Integer getQuantity(ItemType itemType) {
+        return getCosts().getQuantity(itemType);
     }
 
     public SiteMap getSiteMap() {

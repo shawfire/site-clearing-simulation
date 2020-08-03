@@ -2,6 +2,12 @@ package net.shawfire.scs;
 
 import java.util.EnumMap;
 
+/**
+ * ItemType enum contains all the categories for which quantities and costs are calculated.
+ * The item type descriptions are used as labels in the cost summary table.
+ * This class also contains the information to display the costs table in the correct format,
+ * with aligned columns.
+ */
 public enum ItemType {
     COMMUNICATION_OVERHEAD, FUEL_USAGE, UNCLEARED_SQUARE, DESTRUCTION_PROTECTED_TREE, PAINT_DAMAGE;
 
@@ -18,7 +24,7 @@ public enum ItemType {
         addLabel(UNCLEARED_SQUARE, "uncleared squares");
         addLabel(DESTRUCTION_PROTECTED_TREE, "destruction of protected tree");
         addLabel(PAINT_DAMAGE, "paint damage to bulldozer");
-        rowFormat = "%-" + maxDescriptionLength + "s  %8s  %8s%n";
+        rowFormat = "%-" + getMaxDescriptionLength() + "s  %8s  %8s%n";
     }
 
     public static String getRowFormat() {

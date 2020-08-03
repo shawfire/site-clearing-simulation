@@ -1,5 +1,10 @@
 package net.shawfire.scs;
 
+/**
+ * SquareType enum provides the type that is used to store state of each location on the SiteMap.
+ * Whether the square has been CLEARED, is ROCKY, has a removable tree (TREE_REMOVAL),
+ * contains a protected tree (PRESERVE_TREE) and or is PLAIN.
+ */
 public enum SquareType {
     PLAIN("o"), ROCKY("r"), TREE_REMOVAL("t"), PRESERVE_TREE("T"), CLEARED("c");
 

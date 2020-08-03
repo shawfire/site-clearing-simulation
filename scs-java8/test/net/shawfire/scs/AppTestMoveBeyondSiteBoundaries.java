@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 
-public class AppTestMoveBeyoundSiteBoundaries {
+public class AppTestMoveBeyondSiteBoundaries {
 
     PrintStream stdout = Mockito.mock(PrintStream.class);
     InputStream stdin;
@@ -23,9 +23,9 @@ public class AppTestMoveBeyoundSiteBoundaries {
         System.setOut(stdout);
     }
 
-    @Ignore("This test works in isolation")
+    @Ignore("TODO: testMoveBeyondSiteBounds works in isolation")
     @Test
-    public void testRemoveProtectedTree() throws Exception {
+    public void testMoveBeyondSiteBounds() throws Exception {
         String fileName = "/test-input-commands-mbsb.txt";
         stdin = SiteMap.class.getResourceAsStream(fileName);
         System.setIn(stdin);
@@ -71,6 +71,8 @@ public class AppTestMoveBeyoundSiteBoundaries {
         assertStdoutContains("uncleared squares                    38       114");
         assertStdoutContains("destruction of protected tree         0         0");
         assertStdoutContains("paint damage to bulldozer             1         2");
+        assertStdoutContains("----");
+        assertStdoutContains("Total                                         128");
 
         // Validate closing message
         assertStdoutContains(Constants.ThankYouMsg);

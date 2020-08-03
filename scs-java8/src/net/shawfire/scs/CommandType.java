@@ -5,6 +5,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * CommandType is an enum class for Command Types.
+ * The essential first character of each command is associated with it's description.
+ * This class supports 1) the display of the command's description,
+ * 2) Parsing a command to it's equivalent one letter unique prefix,
+ * 3) Provides a regular expression that validate if a line contains only one valid command.
+ */
 public enum CommandType {
     ADVANCE("a"), TURN_LEFT("l"), TURN_RIGHT("r"), QUIT("q");
 
@@ -22,14 +29,6 @@ public enum CommandType {
 
     public String toString() {
         return descriptionMap.get(this);
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public Integer getAmount() {
-        return amount;
     }
 
     public boolean equals(String value) {

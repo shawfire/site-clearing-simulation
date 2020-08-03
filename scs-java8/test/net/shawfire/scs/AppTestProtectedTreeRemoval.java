@@ -25,7 +25,7 @@ public class AppTestProtectedTreeRemoval {
         System.setIn(stdin);
     }
 
-    @Ignore("This test works in isolation")
+    @Ignore("TODO: testRemoveProtectedTree works in isolation")
     @Test
     public void testRemoveProtectedTree() throws Exception {
         String fileName = "/test-site-map.txt";
@@ -69,6 +69,7 @@ public class AppTestProtectedTreeRemoval {
         assertStdoutContains("uncleared squares                    40       120");
         assertStdoutContains("destruction of protected tree         1        10");
         assertStdoutContains("paint damage to bulldozer             0         0");
+        assertStdoutContains("Total                                         143");
 
         // Validate closing message
         assertStdoutContains(Constants.ThankYouMsg);
