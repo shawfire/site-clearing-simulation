@@ -1,0 +1,9 @@
+net/shawfire/scs/CommandPojoTest.class
+net/shawfire/scs/DirectionTest.class
+net/shawfire/scs/SiteMapTest.class
+net/shawfire/scs/AppTestMoveBeyondSiteBoundaries.class
+net/shawfire/scs/AppTestProtectedTreeRemoval.class
+net/shawfire/scs/CommandTest.class
+net/shawfire/scs/BulldozerTest.class
+net/shawfire/scs/AppTest.class
+net/shawfire/scs/CostsTest.class

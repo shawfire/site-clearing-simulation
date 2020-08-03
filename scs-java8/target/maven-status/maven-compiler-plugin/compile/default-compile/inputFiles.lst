@@ -1,0 +1,17 @@
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/Command.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/SquareType.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/CommandType.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/App.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/ItemCostLookup.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/Costs.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/SysOutDelegate.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/SysInDelegate.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/ItemType.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/Direction.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/Bulldozer.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/CommandPojo.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/Utils.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/ChangeInDirection.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/ActivityFuelLookup.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/Constants.java
+/Users/johnshaw/dev/site-clearing-simulation/scs-java8/src/main/java/net/shawfire/scs/SiteMap.java
