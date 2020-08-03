@@ -181,7 +181,7 @@ $ mvn javadoc:javadoc
 
 <details><summary>Approach</summary>
 
-- Used a `TDD` (`T`est `D`riven `D`esign `A`pproach) within IntelliJ IDEA
+- Used a `TDD` (`T`est `D`riven `D`esign) Approach within IntelliJ IDEA
 - Used `Java 8`, `Junit 4` and `Mockito` (Used to mock the `input` and `output` `streams`)
 - Used Maven directory structure and a `pom.xml` to support command line build, test, package and run.
 - Each each Source file has a `javadoc` comment which explains what part that file plays in the solution.
