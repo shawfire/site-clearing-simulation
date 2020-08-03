@@ -3,7 +3,7 @@
 `Click` on list items to expand and<br/>
 `Click` on hyperlinks for more information.
 
-# Building, Testing and Execution Instructions
+## Building, Testing and Execution Instructions
 
 <details><summary>Prerequisites on a mac</summary>
 
@@ -111,7 +111,7 @@ $
 
 </details>
 
-<details><summary>Execute packaged jar</summary>
+<details><summary>Execute packaged jar - successful simulation</summary>
 
 - Execute the package jar file
 
@@ -162,9 +162,169 @@ $
 
 </details>
 
+## Documenting the approach taken
+
+<details><summary>Javadoc maven plugin</summary>
+
+- Open the javadoc index.html file up on your local browser
+  - ./site-clearing-simulation/scs-java8/target/site/apidocs/index.html
+    - [index.html](./scs-java8/target/site/apidocs/index.html)
+
+```bash
+$ mvn javadoc:javadoc
+```
+
+- Reference
+  - [Generate Javadocs As Part Of Project Reports](https://maven.apache.org/plugins/maven-javadoc-plugin/usage.html)
+
+</details>
+
+<details><summary>Approach</summary>
+
+- Used a `TDD` (`T`est `D`riven `D`esign `A`pproach) within IntelliJ IDEA
+- Used `Java 8`, `Junit 4` and `Mockito` (Used to mock the `input` and `output` `streams`)
+- Used Maven directory structure and a `pom.xml` to support command line build, test, package and run.
+- Each each Source file has a `javadoc` comment which explains what part that file plays in the solution.
+- Each feature and capability of the App has a corresponding test due to the `TDD` approach that has been followed.
+</details>
+
+<details><summary>Design Brief</summary>
+
+- The main `App` class for the site clearing:
+  - Expects a the site map text file as the one parameter on the command line.
+  - The site map text file is found by looking in the `classpath`.
+  - For the purpose of testing a site map text file (`/test-site-map.txt`) is provided in the `resources` directory.
+  - After validating the arguments; an instance of the `SiteMap` is created. The
+    - `SiteMap` reads the site map text file provided as the first parameter.
+  - An instance of the `Bulldozer` class is then instantiated with the `siteMap` created above.
+    - The `bulldozer` accepts commands form the input stream, and executes each command as it is received.
+    - Once the simulation is complete, the bulldozer displays all the `costs` (using a `Costs` class) it incurred during the simulation.
+- The `Costs` class enables incrementing quantities of on `ItemType` `enum` `class`.
+  - The `Costs` class also displays a summary table of `ItemType` `quantities` and `costs`.
+- The `ItemType` `enum` contains all the categories for which `quantities` and `costs` are calculated.
+  - The item type `descriptions` are used as labels in the cost summary table.
+  - This class also contains the information to display the `costs table` in the `correct format`, with aligned columns.
+- `ItemCostLookup` provides a lookup for `ItemType` costs per individual item.
+  - To get the `cost` the `quantity` is multiplied by the lookup amount for an `ItemType`.
+- `SquareType` `enum` provides the type that is used to store the state of each location on the `SiteMap`.
+  - Whether the square has been `CLEARED`, is `ROCKY`, has a removable tree (`TREE_REMOVAL`), contains a protected tree (`PRESERVE_TREE`) and or is `PLAIN`.
+- `CommandType` is an enum class for Command Types.
+  - The `essential first character` of each command is associated with it's description.
+  - This class supports:
+    - the display of the command's `description`,
+    - Parsing a command to it's equivalent `one letter unique prefix`,
+    - Provides a `regular expression` that validate if a line contains only one valid command.
+- The `CommandPojo` caters for the `Advance` command, which also has a corresponding `amount`.
+  - Each command has an `Optional` `amount`.
+  - This class enables a Command to be compared, displayed or stored in a Map lookup.
+- The `ChangeInDirection` `enum` representing a change in direction (`LEFT` or `RIGHT`) for the `bulldozer`.
+  - These value map to the underlying direction commands in the `CommandType` enum.
+- The `Direction` enum provides a mechanism to change the direction `left` or `right` in the four different direction orientations namely: `EAST`, `SOUTH`, `WEST`, and `NORTH`
+- The `Command` class is used to read a command from the input stream.
+  - If the command is an invalid command; another command will be requested.
+  - Only one command is processed per line received.
+  - Any additional spaces before, embedding or suffixing a command are ignored.
+  - Only the first letter of the command is used and the case is ignored
+  - (for example: `q` `Quit` are equivalent and will stop the simulation).
+  - As the `Advance` command also has a corresponding amount the `CommandPojo` is returned which supports an `Optional` `amount`.
+
+</details>
+
 <details><summary>References</summary>
 
 - [junit4 docs](https://junit.org/junit4/)
 - [Mockito docs](https://site.mockito.org)
 - [javadoc comments](https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html)
+  </details>
+
+## Testing Edge cases
+
+<details><summary>Execute packaged jar - Remove Protected Tree - failed simulation</summary>
+
+```bash
+$ java -jar target/scs-java8-1.0.jar /test-site-map.txt
+
+Welcome to the site clearing simulator.
+
+This is a map of the site (read from file: /test-site-map.txt):
+
+o o t o o o o o o o
+o o o o o o o T o o
+r r r o o o o T o o
+r r r r o o o o o o
+r r r r r t o o o o
+
+The bulldozer is currently located at the Northern edge of the site, immediately to the West of the site, and facing East.
+
+(l)eft, (r)ight, (a)dvance <n>, (q)uit: a 1
+(l)eft, (r)ight, (a)dvance <n>, (q)uit: r
+(l)eft, (r)ight, (a)dvance <n>, (q)uit: a 1
+(l)eft, (r)ight, (a)dvance <n>, (q)uit: l
+(l)eft, (r)ight, (a)dvance <n>, (q)uit: a 7
+
+Simulation ended prematurely. Reason - Attempt to move bulldozer to protected square type: PRESERVE_TREE
+
+These are the commands you issued:
+
+advance 1, turn right, advance 1, turn left, advance 7
+
+The costs for this land clearing operation were:
+
+Item                           Quantity      Cost
+communication overhead                5         5
+fuel usage                            8         8
+uncleared squares                    40       120
+destruction of protected tree         1        10
+paint damage to bulldozer             0         0
+----
+Total                                         143
+
+Thankyou for using the Aconex site clearing simulator.
+
+$
+```
+
+</details>
+
+<details><summary>Execute packaged jar - Move bulldozer beyond site boundary - failed simulation</summary>
+
+```bash
+$ java -jar target/scs-java8-1.0.jar /test-site-map.txt
+
+Welcome to the site clearing simulator.
+
+This is a map of the site (read from file: /test-site-map.txt):
+
+o o t o o o o o o o
+o o o o o o o T o o
+r r r o o o o T o o
+r r r r o o o o o o
+r r r r r t o o o o
+
+The bulldozer is currently located at the Northern edge of the site, immediately to the West of the site, and facing East.
+
+(l)eft, (r)ight, (a)dvance <n>, (q)uit: Advance 11
+
+Simulation ended prematurely. Reason - Attempt to drive bulldozer out of site bearing: EAST
+
+These are the commands you issued:
+
+advance 11
+
+The costs for this land clearing operation were:
+
+Item                           Quantity      Cost
+communication overhead                1         1
+fuel usage                           11        11
+uncleared squares                    38       114
+destruction of protected tree         0         0
+paint damage to bulldozer             1         2
+----
+Total                                         128
+
+Thankyou for using the Aconex site clearing simulator.
+
+$
+```
+
 </details>

@@ -1,5 +1,8 @@
 package net.shawfire.scs;
 
+/**
+ * Application constants: Messages, Prompts and Labels.
+ */
 public class Constants {
     public static String MustPassFileName = "Must pass only site map text file argument";
     public static String AppHeadingLabel = "\nWelcome to the site clearing simulator.\n";
