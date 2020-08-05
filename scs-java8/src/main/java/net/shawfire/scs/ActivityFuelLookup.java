@@ -9,7 +9,7 @@ import java.util.EnumMap;
  * to clear a `ROCKY` square uses `2` fuel units and so on.
  */
 public class ActivityFuelLookup {
-    public static EnumMap<SquareType,Integer> costs = new EnumMap<>(SquareType.class);
+    public static final EnumMap<SquareType,Integer> costs = new EnumMap<>(SquareType.class);
     static {
         // Assign fuel usage to SquareType
         costs.put(SquareType.PLAIN, 1);

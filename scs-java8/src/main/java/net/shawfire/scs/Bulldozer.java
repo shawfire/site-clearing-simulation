@@ -16,10 +16,10 @@ import java.util.ArrayList;
  * After the simulation is complete a cost summary is displayed.
  */
 public class Bulldozer {
-    public static String UnexpectedDirectionMessage = "Unexpected direction: ";
-    public static String AttemptToDriveOutOfBoundsMessage = "Attempt to drive bulldozer out of site bearing: ";
-    public static String AttemptAccessProtectedSquareMessage = "Attempt to move bulldozer to protected square type: ";
-    public static String SimulationEndedPrematurelyMessage = "\nSimulation ended prematurely. Reason - %s\n";
+    private static final String UnexpectedDirectionMessage = "Unexpected direction: ";
+    public static final String AttemptToDriveOutOfBoundsMessage = "Attempt to drive bulldozer out of site bearing: ";
+    public static final String AttemptAccessProtectedSquareMessage = "Attempt to move bulldozer to protected square type: ";
+    private static final String SimulationEndedPrematurelyMessage = "\nSimulation ended prematurely. Reason - %s\n";
 
     private Direction direction = Direction.EAST;
     private int x = -1;

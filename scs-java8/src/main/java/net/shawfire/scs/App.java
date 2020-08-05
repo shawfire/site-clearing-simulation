@@ -39,11 +39,11 @@ public class App {
         setFileName(fileName);
     }
 
-    public String getFileName() {
+    private String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
+    private void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
@@ -55,7 +55,7 @@ public class App {
         sysOutDelegate = val;
     }
 
-    public void run() throws Exception {
+    private void run() throws Exception {
         Utils.println(Constants.AppHeadingLabel);
         Utils.println(String.format(Constants.SiteMapLabel, getFileName()));
 
